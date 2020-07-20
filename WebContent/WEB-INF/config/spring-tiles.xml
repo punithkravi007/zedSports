@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="zed.user.template" template="/WEB-INF/Views/User/index.jsp">
+		<put-attribute name="cart" value=""></put-attribute>
+		<put-attribute name="body" value=""></put-attribute>
+	</definition>
+
+	<definition name="zed.user.homepage" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/Home.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.blog" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/blog.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.cart" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/cart.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.checkout" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/checkout.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.contact" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/contact.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.product" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/Views/User/product-details.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.product-grid" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/Views/User/product-grid.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.blog.details" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/Views/User/blog-details.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.wishlist" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/Views/User/wishlist.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.user.profile" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/Views/User/userProfile.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.user.all.orders" extends="zed.user.template">
+		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/Views/User/Orders.jsp"></put-attribute>
+	</definition>
+
+
+	<definition name="zed.signin" template="/WEB-INF/Views/signin.jsp"></definition>
+	<definition name="zed.signup" template="/WEB-INF/Views/signup.jsp"></definition>
+
+
+	<!-- ADMIN -->
+	
+	<definition name="zed.admin.template" template="/WEB-INF/Views/AdminViews/index.jsp">
+		<put-attribute name="body" value=""></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.homePage" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/dashboard.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.add.tag" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/addTag.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.add.product" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/addProduct.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.view.product" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/viewAllProducts.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.view.induvidualProduct" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/viewInduvidualProduct.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.edit.induvidualProduct" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/editProduct.jsp"></put-attribute>
+	</definition>
+
+	<definition name="zed.admin.add.category" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/addProductCategory.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.order.pending" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/pendingOrders.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.order.approved" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/ApprovedOrders.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.order.shipped" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/shippedOrders.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.order.delivered" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/deliveredOrders.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.query.pending" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/pendingQueries.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="zed.admin.query.responded" extends="zed.admin.template">
+		<put-attribute name="body"
+			value="/WEB-INF/Views/AdminViews/respondedQueries.jsp"></put-attribute>
+	</definition>
+
+
+</tiles-definitions>

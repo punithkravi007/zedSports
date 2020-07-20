@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/zed</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root@123</property>
+		<property name="show_sql">true</property>
+		<property name="hbm2ddl.auto">validate</property>
+
+		<property name="cache.use_second_level_cache">true</property>
+		<property name="cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+		<mapping class="com.ecommerce.zedSports.Entities.UserEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.TagEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.ProductEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.ProductTagEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.PhotoEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.CategoryEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.AddressEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.WishlistEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.CartEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.OrderEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.OrderViewEntity" />
+		<mapping class="com.ecommerce.zedSports.Entities.WishlistViewEntity"/>
+		<mapping class="com.ecommerce.zedSports.Entities.CartViewEntity"/>
+		<mapping class="com.ecommerce.zedSports.Entities.QueriesEntity"/>
+
+	</session-factory>
+</hibernate-configuration>

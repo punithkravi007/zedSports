@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>Zed-Sports</display-name>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>springTiles</taglib-uri>
+			<taglib-location>/WEB-INF/tld/spring-tiles.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>coreTags</taglib-uri>
+			<taglib-location>/WEB-INF/tld/core.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>spring</taglib-uri>
+			<taglib-location>/WEB-INF/tld/spring.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+	<servlet>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/dispatcherServlet-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+</web-app>
