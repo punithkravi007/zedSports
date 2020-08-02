@@ -25,20 +25,21 @@ public class CheckOutController {
 	private CheckoutService checkoutService;
 
 	@RequestMapping(value = "placeOrder", method = RequestMethod.POST)
-	public @ResponseBody String bookOrderHandler(@RequestParam("order") String orderEntities, HttpSession session) {
+	public @ResponseBody String bookOrderHandler(@RequestParam("order") String orderEntities,@RequestParam("userId") int userId,@RequestParam("uqi") String uqi, HttpSession session) {
 		boolean isUserActive = sessionController.isUserSessionActive(session);
+		boolean isUUIDValid = ((String) session.getAttribute("UNIQUE_ID")) != null && ((String) session.getAttribute("UNIQUE_ID")).equalsIgnoreCase(uqi) ? true : false;
 		String response = "false";
 		try {
-			if (isUserActive) {
-				UserEntity userEntity = (UserEntity) session.getAttribute("USER_ENTITY");
+			if (isUserActive && isUUIDValid) {
+				UserEntity entity = (UserEntity)session.getAttribute("USER_ENTITY");
 				ObjectMapper mapper = new ObjectMapper();
 				OrderEntity[] entities = mapper.readValue(orderEntities, OrderEntity[].class);
-				response = checkoutService.placeOrderService(userEntity.getUserId(), entities);
+				response = checkoutService.placeOrderService(userId,entity.getUserEmail(), entities);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			response = "false";
 		}
-
 		return response;
 	}
 

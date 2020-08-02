@@ -126,7 +126,6 @@
 		$("#productQuantityFilter").hide();
 		$("#filter-btn-id").hide();
 		
-		$('#example').DataTable();
 		getAllProducts();
 		
 		$("#filter").on({
@@ -144,9 +143,11 @@
 	});
 	
 	var getAllProducts = async function(){
-		var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts","GET","");
-		productsG = JSON.parse(response);
-		appendProductsToTable(JSON.parse(response));
+		 var param = "uqi="+"${UNIQUE_ID}";
+		 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
+		 response = JSON.parse(response);
+		 productsG = response;
+		appendProductsToTable(response);
 	}
 	
 	var appendProductsToTable = function(products){
@@ -172,7 +173,7 @@
 		    		"</a>"+
 		    		"</div>"+
 		    		"<div class='photo'>"+
-		    			"<a href='${pageContext.request.contextPath}/products/viewProduct?productCode="+products[product].productCode+"'> <img src='"+products[product].photoEntity.binaryPhoto1+"' class='img-responsive' alt='Product Image not found' /> </a>"+
+		    			"<a href='${pageContext.request.contextPath}/products/viewProduct?productId="+products[product].productId+"'> <img src='"+products[product].photoEntity.binaryPhoto1+"' class='img-responsive' alt='Product Image not found' /> </a>"+
 		    		"</div>"+
 		    		"<div class='info'>"+
 		    			"<div class='row'>"+

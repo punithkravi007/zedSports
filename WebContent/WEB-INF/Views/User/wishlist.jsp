@@ -30,9 +30,8 @@ $(document).ready(function(){
 });
 
 var getWishlist = async function(){
-	var param = "userId="+$("#userIdG").val();
+	var param = "userId="+'${USER_ENTITY.userId}'+"&"+"uqi="+'${UNIQUE_ID}';
 	var wishlist = await serviceCall("${pageContext.request.contextPath}/wishlist/getAllWishlistedProducts","POST",param);
-	console.log(JSON.parse(wishlist));
 	wishlist = JSON.parse(wishlist);
 	if(wishlist.length == 0){
 		$("#products-wishlist").hide();
@@ -47,7 +46,7 @@ var getWishlist = async function(){
 }
 
 var removeFromWishlist = async function(productId){
-	var param = "productId="+productId+"&userId="+$("#userIdG").val();
+	var param = "productId="+productId+"&userId="+'${USER_ENTITY.userId}'+"&"+"uqi="+'${UNIQUE_ID}';
 	var response = await serviceCall("${pageContext.request.contextPath}/wishlist/removeProduct","POST",param);
 	getWishlist();
 }
@@ -65,7 +64,7 @@ var appendWishlist = function(soretdProducts){
 	            "</a>"+
 	            "<ul class='social'>"+
 	                "<li><a onclick='removeFromWishlist("+soretdProducts[prod].productId+")' data-tip='Remove to Wishlist'><i class='fa fa-trash'></i></a></li>"+
-	                "<li><a href='#' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></li>"+
+	                "<li><a onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></li>"+
 	            "</ul>"+
 	        "</div>"+
 	        "<div class='product-content' style='margin-bottom:15px'>"+
@@ -79,7 +78,4 @@ var appendWishlist = function(soretdProducts){
 	}
 	$("#products-wishlist").append(productDiv);
 }
-
-
-
 </script>

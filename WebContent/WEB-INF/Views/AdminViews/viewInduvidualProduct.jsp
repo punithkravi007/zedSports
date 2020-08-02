@@ -79,10 +79,14 @@
 								<b>Color :</b>
 							</p>
 						</div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: red;padding: 4px;margin-right: 2px;padding-left: 10px"></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: green;padding: 4px;padding-left: 9px"></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: white;padding: 4px;margin-left: 2px;padding-left: 9px"></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: yellow;padding: 4px;margin-left: 2px;padding-left: 8px"></div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: red; padding: 4px; margin-right: 2px; padding-left: 10px"></div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: green; padding: 4px; padding-left: 9px"></div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: white; padding: 4px; margin-left: 2px; padding-left: 9px"></div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: yellow; padding: 4px; margin-left: 2px; padding-left: 8px"></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-1" style="width: 73px">
@@ -90,13 +94,26 @@
 								<b>Size :</b>
 							</p>
 						</div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: mintcream;padding: 4px;margin-right: 2px;padding-left: 10px"><a>S</a></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: mintcream;padding: 4px;padding-left: 9px"><a>M</a></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: mintcream;padding: 4px;margin-left: 2px;padding-left: 9px"><a>L</a></div>
-						<div class="col-sm-1" style="border-radius:100%;border:1px solid black;width: 30px;height: 30px;background-color: mintcream;padding: 4px;margin-left: 2px;padding-left: 8px"><a>XL</a></div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: mintcream; padding: 4px; margin-right: 2px; padding-left: 10px">
+							<a>S</a>
+						</div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: mintcream; padding: 4px; padding-left: 9px">
+							<a>M</a>
+						</div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: mintcream; padding: 4px; margin-left: 2px; padding-left: 9px">
+							<a>L</a>
+						</div>
+						<div class="col-sm-1"
+							style="border-radius: 100%; border: 1px solid black; width: 30px; height: 30px; background-color: mintcream; padding: 4px; margin-left: 2px; padding-left: 8px">
+							<a>XL</a>
+						</div>
 					</div>
 					<p>
-						<b>Category : </b> ${PRODUCT_ENTITY.productCategory}
+						<b>Category : </b> ${PRODUCT_ENTITY.productCategory} /
+						${PRODUCT_ENTITY.productGender}
 					</p>
 					<p>
 						<b>Tags : </b>
@@ -105,10 +122,79 @@
 						</core:forEach>
 					</p>
 					<hr>
-					<h4><b>Description : </b></h4>
-					<p style="font-family: fantasy;font-style: italic;">${PRODUCT_ENTITY.productDescription}</p>
+					<h4>
+						<b>Description : </b>
+					</h4>
+					<p style="font-style: italic;">${PRODUCT_ENTITY.productDescription}</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<div class="card border-grey border-lighten-2">
+	<div class="card-header">
+		<h4 class="card-title" style="padding-bottom: 10px; text-align: left">Product
+			Review</h4>
+		<a class="heading-elements-toggle"><i
+			class="icon-ellipsis font-medium-3"></i></a>
+		<div class="heading-elements">
+			<ul class="list-inline pt-1">
+				<li><a
+					href="${pageContext.request.contextPath}/products/viewAllProducts"><i
+						class="icon-arrow-left4" title="back"></i></a></li>
+				<li><a data-action="reload"><i class="icon-repeat2"></i></a></li>
+				<li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="card-body collapse in">
+		<div class="card-block">
+			<div class="row-fluid">
+				<core:forEach var="review" items="${PRODUCT_ENTITY.reviewEntities}">
+					<div class="col-sm-12" style="margin-top: 5px;">
+						<div class="panel panel-default"
+							style="background-color: white; color: white; border: 1px solid black; border-radius: 0px; box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .175) !important">
+							<!--/panel-heading-->
+							<div class="panel-heading">
+								<button class="btn btn-warning"
+									style="border-radius: 0px; float: left;width: 90px">${review.rating} Star</button>
+								<button class="btn btn-danger"
+									style="border-radius: 0px; float: right"
+									onclick="deleteReview(${review.reviewId})">Delete
+									Review</button>
+							</div>
+							<div class="panel-body" itemprop="reviewBody"
+								style="color: black; padding: 10px;margin-top: 30px;">
+								<p style="color: black">${review.review}</p>
+								<hr>
+								<span itemprop="author" itemscope
+									itemtype="http://schema.org/Person"> <span
+									itemprop="name"><b>-- ${review.fullName}</b></span></span>
+								<!--/author schema -->
+								&nbsp;&nbsp;&nbsp; <span class="glyphicon glyphicon-calendar"
+									aria-hidden="true"></span>
+
+								<meta itemprop="datePublished" content="01-01-2016">
+								${review.reviewCreationDate} 
+								</span>
+							</div>
+						</div>
+						<!--/panel-->
+					</div>
+				</core:forEach>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+
+var deleteReview = async function(reviewId){
+	debugger;
+	var param = "uqi="+"${UNIQUE_ID}"+"&"+"reviewId="+reviewId;
+	var response = await serviceCall("${pageContext.request.contextPath}/product/review/deleteProductReview", "POST", param);
+	if(response == "true"){
+		location.reload();
+	}
+}
+
+</script>

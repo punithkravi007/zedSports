@@ -742,8 +742,6 @@
 	<spring:url value="/Resources/js/main.js" var="MAIN_JS" />
 	<script src="${MAIN_JS}"></script>
 
-
-
 </body>
 
 </html>

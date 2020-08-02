@@ -75,15 +75,17 @@
 						<div class='col-md-3 col-sm-4' style='margin-top: 5px;'>
 							<div class='product-grid'>
 								<div class='product-image'>
-									<a href='${pageContext.request.contextPath}/product?prodId=${product.productId}'> <img class='pic-1'
-										src='${product.photoEntity.binaryPhoto1}'> <img
-										class='pic-2' src='${product.photoEntity.binaryPhoto2}'>
+									<a
+										href='${pageContext.request.contextPath}/product?prodId=${product.productId}'>
+										<img class='pic-1' src='${product.photoEntity.binaryPhoto1}'>
+										<img class='pic-2' src='${product.photoEntity.binaryPhoto2}'>
 									</a>
 									<ul class='social'>
-										<li><a href='#' data-tip='Add to Wishlist'><i
-												class='fa fa-shopping-bag'></i></a></li>
-										<li><a href='#' data-tip='Add to Cart'><i
-												class='fa fa-shopping-cart'></i></a></li>
+										<li><a
+											onclick='addProductToWishList(${product.productId})'
+											data-tip='Add to Wishlist'><i class='fa fa-heart'></i></a></li>
+										<li><a onclick='addProductToCart(${product.productId})'
+											data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></li>
 									</ul>
 								</div>
 								<div class='product-content' style='margin-bottom: 15px'>
@@ -104,7 +106,8 @@
 </section>
 <script>
 $(document).ready(function() {
-	 dropdownService("#product-grid-sort-tag", "${pageContext.request.contextPath}/products/getTags", "POST", "", "TAGS");
+	var param = "uqi="+"${UNIQUE_ID}";
+	dropdownService("#product-grid-sort-tag","${pageContext.request.contextPath}/products/getTags", "POST", param, "TAGS");
 
 	 $("#sort-by-price").on({
 	  "change": sortOnPrice
@@ -121,24 +124,37 @@ $(document).ready(function() {
 	 $("#price-range-filter").on({
 	  "click": filterByPriceRange
 	 });
+	 
 	});
 
 	var sortOnPrice = async function() {
 	 var selectedOption = $("#sort-by-price").children("option:selected").val();
-	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "GET", "");
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
 	 response = JSON.parse(response);
-	 console.log(response);
-	 console.log($("#selGen").val());
-	 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 
+	 var selectedCategory = "${SELECTED_CATEGORY}";
+	 if(selectedCategory.length > 0){
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 }else{
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val());
+	 }
 	 response = selectedOption == 'HL' ? response.sort((a, b) => b.productOfferPrice - a.productOfferPrice) : response.sort((a, b) => a.productOfferPrice - b.productOfferPrice);
 	 appendProductsToGrid(response);
 	}
 
 	var sortOnTag = async function() {
 	 var selectedOption = $("#product-grid-sort-tag").children("option:selected").val();
-	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "GET", "");
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
 	 response = JSON.parse(response);
-	 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 
+	 var selectedCategory = "${SELECTED_CATEGORY}";
+	 if(selectedCategory.length > 0){
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 }else{
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val());
+	 }
 	 var products = [];
 	 for (var product = 0; product < response.length; product++) {
 	  for (var tag = 0; tag < response[product].tagEntities.length; tag++) {
@@ -153,11 +169,17 @@ $(document).ready(function() {
 
 	var filterByOffer = async function() {
 	 var selectedOption = $("#filter-by-offer").children("option:selected").val();
-	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "GET", "");
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
 	 response = JSON.parse(response);
 	 for (var product = 0; product < response.length; product++)
 	  response[product].offerPercentage = 100 - Math.round((response[product].productOfferPrice / response[product].productOriginalPrice) * 100);
-	 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val() && e.offerPercentage >= selectedOption);
+	 var selectedCategory = "${SELECTED_CATEGORY}";
+	 if(selectedCategory.length > 0){
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val() && e.offerPercentage >= selectedOption);
+	 }else{
+		 response = response.filter(e => e.productIsActive == '1' && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.offerPercentage >= selectedOption);
+	 }
 	 appendProductsToGrid(response);
 	}
 
@@ -165,9 +187,17 @@ $(document).ready(function() {
 	 var amount = $("#amount").val();
 	 var startAmount = amount.split("-")[0].split(".")[1];
 	 var endAmount = amount.split("-")[1].split(".")[1];
-	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "GET", "");
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
 	 response = JSON.parse(response);
-	 response = response.filter(e => e.productIsActive == '1' && parseInt(e.productOfferPrice, 10) >= parseInt(startAmount, 10) && parseInt(e.productOfferPrice, 10) <= parseInt(endAmount, 10) && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 
+	 var selectedCategory = "${SELECTED_CATEGORY}";
+	 if(selectedCategory.length > 0){
+		 response = response.filter(e => e.productIsActive == '1' && parseInt(e.productOfferPrice, 10) >= parseInt(startAmount, 10) && parseInt(e.productOfferPrice, 10) <= parseInt(endAmount, 10) && e.productGender.toLowerCase().charAt(0) == $("#selGen").val() && e.productCategory == $("#selCat").val());
+	 }else{
+		 response = response.filter(e => e.productIsActive == '1' && parseInt(e.productOfferPrice, 10) >= parseInt(startAmount, 10) && parseInt(e.productOfferPrice, 10) <= parseInt(endAmount, 10) && e.productGender.toLowerCase().charAt(0) == $("#selGen").val());
+	 }
+	 
 	 appendProductsToGrid(response);
 	}
 
@@ -183,8 +213,8 @@ $(document).ready(function() {
 	                "<img class='pic-2' src='"+soretdProducts[prod].photoEntity.binaryPhoto2+"'>"+
 	            "</a>"+
 	            "<ul class='social'>"+
-	                "<li><a href='#' data-tip='Add to Wishlist'><i class='fa fa-shopping-bag'></i></a></li>"+
-	                "<li><a href='#' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></li>"+
+		            "<li><a onclick='addProductToWishList("+soretdProducts[prod].productId+")' data-tip='Add to Wishlist'><i class='fa fa-heart'></i></a></li>"+
+	                "<li><a onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></li>"+
 	            "</ul>"+
 	        "</div>"+
 	        "<div class='product-content' style='margin-bottom:15px'>"+

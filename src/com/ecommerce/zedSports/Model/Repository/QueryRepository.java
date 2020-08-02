@@ -70,10 +70,11 @@ public class QueryRepository {
 		try {
 			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
-			Query query = session.createQuery("UPDATE QueriesEntity SET response =:response, isResponded =:isResponded WHERE queryId =:queryId");
+			Query query = session.createQuery("UPDATE QueriesEntity SET response =:response, isResponded =:isResponded,respondedTime=:respondedTime WHERE queryId =:queryId");
 			query.setParameter("response", queriesEntity.getResponse());
 			query.setParameter("isResponded", queriesEntity.getIsResponded());
 			query.setParameter("queryId", queriesEntity.getQueryId());
+			query.setParameter("respondedTime", queriesEntity.getRespondedTime());
 			query.executeUpdate();
 			transaction.commit();
 		} catch (Exception e) {

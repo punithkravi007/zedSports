@@ -37,6 +37,10 @@ public class QueriesEntity {
 	private String response;
 	@Column(name = "is_responded")
 	private int isResponded;
+	@Column(name = "query_created_date")
+	private String queryCreatedDate;
+	@Column(name = "query_responded_date")
+	private String respondedTime;
 	
 	public int getQueryId() {
 		return queryId;
@@ -87,11 +91,24 @@ public class QueriesEntity {
 		this.isResponded = isResponded;
 	}
 	
+	public String getQueryCreatedDate() {
+		return queryCreatedDate;
+	}
+	public void setQueryCreatedDate(String queryCreatedDate) {
+		this.queryCreatedDate = queryCreatedDate;
+	}
+	public String getRespondedTime() {
+		return respondedTime;
+	}
+	public void setRespondedTime(String respondedTime) {
+		this.respondedTime = respondedTime;
+	}
+	
 	@Override
 	public String toString() {
 		return "QueriesEntity [queryId=" + queryId + ", userName=" + userName + ", email=" + email + ", mobileNumber="
 				+ mobileNumber + ", subject=" + subject + ", message=" + message + ", response=" + response
-				+ ", isResponded=" + isResponded + "]";
+				+ ", isResponded=" + isResponded + ", queryCreatedDate=" + queryCreatedDate + ", respondedTime="
+				+ respondedTime + "]";
 	}
-	
 }

@@ -1,25 +1,26 @@
 <%@ taglib prefix="core" uri="coreTags"%>
+
+<core:if test="${USER_ENTITY.userGender == 'Male'}">
+	<core:set var="PROFILE_IMAGE"
+		value="https://i.dlpng.com/static/png/4296950-avatar-business-face-people-icon-people-icon-png-512_512_preview.webp"></core:set>
+</core:if>
+<core:if test="${USER_ENTITY.userGender == 'Female'}">
+	<core:set var="PROFILE_IMAGE"
+		value="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/11_avatar-512.png"></core:set>
+</core:if>
+<core:if test="${empty USER_ENTITY.userGender}">
+	<core:set var="PROFILE_IMAGE"
+		value="https://www.kindpng.com/picc/m/3-39853_add-user-group-woman-man-icon-user-add.png"></core:set>
+</core:if>
 <div class="container" style="margin: 50px;">
 	<div class="container bootstrap snippets">
 		<div class="row" id="user-profile">
 			<div class="col-lg-3 col-md-4 col-sm-4">
 				<div class="main-box clearfix">
-					<h2>${USER_ENTITY.userFirstName} ${USER_ENTITY.userLastName}</h2>
-					<core:if test="${USER_ENTITY.userGender == 'Male'}">
-						<img
-							src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgBhcplevwUKGRs1P-Ps8Mwf2wOwnW_R_JIA&usqp=CAU"
-							alt="" class="profile-img img-responsive center-block">
-					</core:if>
-					<core:if test="${USER_ENTITY.userGender == 'Female'}">
-						<img
-							src="https://mpng.subpng.com/20180401/wgw/kisspng-computer-icons-person-white-collar-5ac09cb82e0a03.1190263215225724721886.jpg"
-							alt="" class="profile-img img-responsive center-block">
-					</core:if>
-					<core:if test="${empty USER_ENTITY.userGender}">
-						<img
-							src="https://cdn.dribbble.com/users/1623266/screenshots/5090685/j.gif"
-							alt="" class="profile-img img-responsive center-block">
-					</core:if>
+					<h3><b>${USER_ENTITY.userFirstName}&nbsp;${USER_ENTITY.userLastName}&nbsp;&nbsp; <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i></b></h3>
+					<span><small>Active Since : <span id="activeStatus" style="color: green"></span></small></span>
+					<img src="${PROFILE_IMAGE}" alt=""
+						class="profile-img img-responsive center-block">
 					<div class="profile-details">
 						<div class="profile-user-details clearfix">
 							<div class="profile-user-details-label">
@@ -58,7 +59,6 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane fade in active" id="tab-activity">
-
 								<div class="panel panel-warning" style="margin-top: 10px;">
 									<div class="panel-heading"></div>
 									<div class="panel-body">
@@ -107,11 +107,12 @@
 											style="border-radius: 0px; width: 100px">Update</button>
 									</div>
 								</div>
-
 							</div>
-
 							<div class="tab-pane fade" id="tab-friends">
 								<div class="row" style="padding: 10px;">
+									<core:if test="${empty USER_ENTITY.addressEntity}">
+										<span>No Address were added yet.</span>
+									</core:if>
 									<core:forEach var="address"
 										items="${USER_ENTITY.addressEntity}" varStatus="loop">
 										<div class="col-sm-4"
@@ -200,6 +201,9 @@
 									<div class="col-md-12" style="margin-top: 5px;">
 										<div class="panel-group" id="accordion" role="tablist"
 											aria-multiselectable="true">
+											<core:if test="${empty USER_ENTITY.queriesEntities}">
+												<span>No Queries were added yet.</span>
+											</core:if>
 											<core:forEach var="query"
 												items="${USER_ENTITY.queriesEntities}" varStatus="loop">
 												<div class="panel panel-default">
@@ -217,20 +221,39 @@
 														class="panel-collapse collapse " role="tabpanel"
 														aria-labelledby="heading-${loop.count}">
 														<div class="panel-body" style="padding-top: 5px;">
-															<div class="row">
-																<div class="col-sm-1"
-																	style="padding: 10px; font-weight: bold;background-color: cornsilk;">You:</div>
-																<div class="col-sm-10"
-																	style="border: 1px solid; border-radius: 0px; padding: 10px; background-color: gainsboro">${query.message}</div>
-															</div>
-															<div class="row" style="margin-top: 5px;">
-																<div class="col-sm-10"
-																	style="border: 1px solid; border-radius: 0px; padding: 10px; background-color: gray; color: white">
-																	<core:if test="${not empty query.response}">${query.response}</core:if>
-																	<core:if test="${empty query.response}">NO RESPONSE YET</core:if>
+															<div class="mesgs" style="width: 100%">
+																<div class="msg_history" style="height: auto;">
+																	<div class="incoming_msg">
+																		<div class="incoming_msg_img">
+																			<img src="${PROFILE_IMAGE}" alt="User">
+																		</div>
+																		<div class="received_msg">
+																			<div class="received_withd_msg" style="width: 100%">
+																				<p>${query.message}</p>
+																				<span class="time_date" style="color: black">${query.queryCreatedDate}</span>
+																			</div>
+																		</div>
+																	</div>
+																	<core:if test="${not empty query.response}">
+																		<div class="outgoing_msg">
+																			<div class="sent_msg">
+																				<div class="row">
+																					<div class="col-sm-10">
+																						<p>${query.response}</p>
+																						<span class="time_date" style="color: black">${query.respondedTime}</span>
+																					</div>
+																					<div class="col-sm-2">
+																						<div class="incoming_msg_img" style="width: 100%">
+																							<img style="max-width: 50%"
+																								src="https://ptetutorials.com/images/user-profile.png"
+																								alt="sunil">
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</core:if>
 																</div>
-																<div class="col-sm-2"
-																	style="padding: 10px; font-weight: bold;background-color: cornsilk;">: Support Team</div>
 															</div>
 														</div>
 													</div>
@@ -250,6 +273,16 @@
 </div>
 <script>
     $(document).ready(function() {
+    	
+    	var userJoinedDate = "${USER_ENTITY.userDateOfJoined}".split("/");
+    	userJoinedDate = new Date(userJoinedDate[1]+"/"+userJoinedDate[0]+"/"+userJoinedDate[2]);
+    	var today = new Date();
+    	today = new Date(parseInt(today.getMonth())+1+"/"+today.getDate()+"/"+today.getFullYear());
+    	var Difference_In_Time = today.getTime() - userJoinedDate.getTime(); 
+    	var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    	$("#activeStatus").html(Difference_In_Days+" Days");
+    	
+    	console.log(Difference_In_Days);
 
         $("#basicInfoUpdate").on({
             "click": addUserBasicInfo
@@ -258,18 +291,7 @@
         $("#userAddressUpdate").on({
             "click": addUserAddress
         });
-        
-        getUserSpecificQueries();
-
     });
-    
-    
-    var getUserSpecificQueries = async function(){
-    	var mobileNumber = "${USER_ENTITY.userMobileNumber}";
-    	var paam = "moblieNumber="+mobileNumber;
-    	var status = await serviceCall("${pageContext.request.contextPath}/user/addInfo", "POST", param);
-    }
-    
 
     var addUserBasicInfo = async function() {
         
@@ -278,7 +300,7 @@
         var email = $("#email").val();
         var gender = $("#gender").children("option:selected").val();
         
-        var param ="userFirstName=" + userFirstName + "&" + "userLastName=" +userLastName + "&" + "userEmail=" + email + "&" +"userGender=" + gender;
+        var param ="userFirstName=" + userFirstName + "&" + "userLastName=" +userLastName + "&" + "userEmail=" + email + "&" +"userGender=" + gender+"&"+"uqi="+"${UNIQUE_ID}";
 
         var status = await serviceCall("${pageContext.request.contextPath}/user/addInfo", "POST", param);
         if (status == "true") {
@@ -296,7 +318,7 @@
         var pincode = $("#pincode").val();
         var userId = "${USER_ENTITY.userId}";
 
-        var param = "addressOne=" + addressOne + "&" + "addressTwo=" + addressTwo + "&" + "city=" + city + "&" + "state=" + state + "&" + "country=" + country + "&" + "pincode=" + pincode + "&" + "userId=" + userId;
+        var param = "addressOne=" + addressOne + "&" + "addressTwo=" + addressTwo + "&" + "city=" + city + "&" + "state=" + state + "&" + "country=" + country + "&" + "pincode=" + pincode + "&" + "userId=" + userId+"&"+"uqi="+"${UNIQUE_ID}";
 
         var status = await serviceCall("${pageContext.request.contextPath}/user/addUserAddress", "POST", param);
         if (status == "true") {

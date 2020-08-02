@@ -1,5 +1,8 @@
 package com.ecommerce.zedSports.Model.service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,10 @@ public class QueryService {
 	private QueryRepository queryRepository;
 
 	public void addUserQuery(QueriesEntity queriesEntity) {
+		Date date = new Date();  
+        Timestamp ts=new Timestamp(date.getTime());  
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        queriesEntity.setQueryCreatedDate(formatter.format(ts));
 		queryRepository.addUserQuery(queriesEntity);
 	}
 
@@ -28,6 +35,10 @@ public class QueryService {
 	}
 	
 	public void updateResponseToUserQueryService(QueriesEntity queriesEntity){
+		Date date = new Date();  
+        Timestamp ts=new Timestamp(date.getTime());  
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        queriesEntity.setRespondedTime(formatter.format(ts));
 		queryRepository.updateResponseToUserQuery(queriesEntity);
 	}
 

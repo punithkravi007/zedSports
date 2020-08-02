@@ -200,8 +200,8 @@
 														id="productId">
 												</div>
 												<div class="form-group">
-													<label for="issueinput5">Tags</label> <select
-														id="issueinput5" name="tags" class="form-control"
+													<label for="productTags">Tags</label> <select
+														id="productTags" name="tags" class="form-control"
 														data-toggle="tooltip" data-trigger="hover"
 														data-placement="top" data-title="tags" multiple="multiple">
 													</select>
@@ -390,8 +390,8 @@ $(document).ready(function() {
 	 $("#mapProductPhoto").hide();
 	 $("#mainDiv").show();
 	 $(".loader").hide();
-	 
-	 dropdownService("#category","${pageContext.request.contextPath}/products/getCategories","GET", "", "ADD_PRODUCT_CATEGORY");
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 dropdownService("#category","${pageContext.request.contextPath}/products/getCategories","POST", param, "ADD_PRODUCT_CATEGORY");
 
 	 $("#productName").on({
 	  "blur": validateProductName
@@ -412,27 +412,25 @@ $(document).ready(function() {
 	});
 	
 	var mapProductPhotos = async function(){
-		var formData = new FormData($("#productPhotoForm")[0]);
 		$(".loader").show();
-		var response = await mapProductPhotoService("${pageContext.request.contextPath}/products/mapProductPhoto","POST",formData);
+		var formData = new FormData($("#productPhotoForm")[0]);
+		var requestBody = {
+			"targetURL"   : "${pageContext.request.contextPath}/products/mapProductPhoto",
+			"requestType" : "POST",
+			"data"        : formData,
+		}; 
+		var response = await mapProductPhotoService("${pageContext.request.contextPath}/products/mapProductPhoto","POST",requestBody);
 		if(response == "true"){
 			$('.loader').fadeOut();
-			location.replace("${pageContext.request.contextPath}/products/viewAllProducts")
+			location.replace("${pageContext.request.contextPath}/products/viewAllProducts");
 		}
 	}
 	
 	
-	async function mapProductPhotoService(targetURL,targetType,data){
-		
-		var requestBody = {
-				"targetURL":targetURL,
-				"requestType" :targetType,
-				"data":data,
-		};
-		
+	async function mapProductPhotoService(targetURL,targetType,requestBody){
 		var promise = new Promise((resolve, reject) => {
 			$.ajax({
-				url : requestBody.targetURL,
+				url  : requestBody.targetURL,
 				type : requestBody.requestType,
 				data : requestBody.data,
 				processData : false,
@@ -453,21 +451,22 @@ $(document).ready(function() {
 	
 
 	var validateProductName = async function() {
-	 var productName = $("#productName").val();
-	 var status = await serviceCall("${pageContext.request.contextPath}/products/validateDuplicateProduct", "POST", "productName=" + productName);
-	 if (status == 'true') {
-	  $("#saveProductInfo").hide();
-	  $("#product-add-danger").show();
-	 } else {
-	  $("#saveProductInfo").show();
-	  $("#product-add-danger").hide();
-	 }
+		 var param = "productName=" + productName+"&"+"uqi="+"${UNIQUE_ID}";
+		 var isValidProduct = await serviceCall("${pageContext.request.contextPath}/products/validateDuplicateProduct", "POST", param);
+		 if (status == 'true') {
+			  $("#saveProductInfo").hide();
+			  $("#product-add-danger").show();
+		 } else {
+			  $("#saveProductInfo").show();
+			  $("#product-add-danger").hide();
+		 }
 	}
 
 
 	async function addBasicProductInfo() {
 
 	 var productName = $("#productName").val();
+	 productName = productName.replace(/  +/g, ' ').replace(/[^\w\s]/gi, '');
 	 var productQuantity = $("#productQuantity").val();
 	 var productOriginalPrice = $("#productOriginalPrice").val();
 	 var productOfferPrice = $("#productOfferPrice").val();
@@ -476,12 +475,13 @@ $(document).ready(function() {
 	 var productCategory = $("#category").children("option:selected").val();
 	 var productIsActive = $("#isActive").children("option:selected").val();
 
-	 var isValidProduct = await serviceCall("${pageContext.request.contextPath}/products/validateDuplicateProduct", "POST", "productName=" + productName);
+	 var param = "productName=" + productName+"&"+"uqi="+"${UNIQUE_ID}";
+	 var isValidProduct = await serviceCall("${pageContext.request.contextPath}/products/validateDuplicateProduct", "POST", param);
 	 if (isValidProduct == "true") {
 	  $("#saveProductInfo").hide();
 	  $("#product-add-danger").show();
 	 } else {
-	  var param = "productName=" + productName + "&" + "productQuantity=" + productQuantity + "&" + "productOriginalPrice=" + productOriginalPrice + "&" + "productOfferPrice=" + productOfferPrice + "&" + "productDescription=" + productDescription + "&" + "productGender=" + productGender+"&"+"productCategory="+productCategory+"&"+"productIsActive="+productIsActive;
+	  var param = "uqi="+"${UNIQUE_ID}"+"&"+"productName=" + productName + "&" + "productQuantity=" + productQuantity + "&" + "productOriginalPrice=" + productOriginalPrice + "&" + "productOfferPrice=" + productOfferPrice + "&" + "productDescription=" + productDescription + "&" + "productGender=" + productGender+"&"+"productCategory="+productCategory+"&"+"productIsActive="+productIsActive;
 	  var status = await serviceCall("${pageContext.request.contextPath}/products/addNewProductBasicInfo", "POST", param);
 	  status = JSON.parse(status);
 	  if (status != "false") {
@@ -489,7 +489,8 @@ $(document).ready(function() {
 	   $("#product-add-danger").hide();
 	   $("#saveProductInfo").hide();
 	   $("#saveProductTags").show();
-	   dropdownService("#issueinput5","${pageContext.request.contextPath}/products/getTags", "POST", "", "TAGS");
+	   var param = "uqi="+"${UNIQUE_ID}";
+	   dropdownService("#productTags","${pageContext.request.contextPath}/products/getTags", "POST", param, "TAGS");
 	   $("#baseVerticalLeft-tab1").removeClass('active');
 	   $("#tabVerticalLeft1").removeClass('active');
 	   $("#baseVerticalLeft-tab2").addClass('active');
@@ -507,8 +508,8 @@ $(document).ready(function() {
 	}
 
 	var mapTagToProduct = async function() {
-	 var selectedTag = $("#issueinput5 :selected").map((_, e) => e.value).get();
-	 var param = "tags=" + selectedTag + "&" + "productId=" + $("#productId").val();
+	 var selectedTag = $("#productTags :selected").map((_, e) => e.value).get();
+	 var param = "tags=" + selectedTag + "&" + "productId=" + $("#productId").val()+"&"+"uqi="+"${UNIQUE_ID}";
 	 var status = await serviceCall("${pageContext.request.contextPath}/products/mapTag", "POST", param);
 	 if (status != "false") {
 	  $("#baseVerticalLeft-tab2").removeClass('active');

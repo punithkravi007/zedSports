@@ -1,6 +1,5 @@
 package com.ecommerce.zedSports.Controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,11 +67,13 @@ public class SignInController {
 
 	@RequestMapping(value = "user/addInfo", method = RequestMethod.POST)
 	public @ResponseBody String addUserBasicInfo(@ModelAttribute("userEntity") UserEntity userEntity,
-			HttpSession session) {
+			@RequestParam("uqi") String uqi, HttpSession session) {
 		boolean isUserActive = sessionController.isUserSessionActive(session);
+		boolean isUUIDValid = ((String) session.getAttribute("UNIQUE_ID")) != null
+				&& ((String) session.getAttribute("UNIQUE_ID")).equalsIgnoreCase(uqi) ? true : false;
 		UserEntity entity = null;
 		String returnScreen = "false";
-		if (isUserActive) {
+		if (isUserActive && isUUIDValid) {
 			entity = (UserEntity) session.getAttribute("USER_ENTITY");
 			userEntity.setUserId(entity.getUserId());
 			userEntity.setUserMobileNumber(entity.getUserMobileNumber());
@@ -84,8 +85,7 @@ public class SignInController {
 	}
 
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
-	public String loginUser(@ModelAttribute("userEntity") UserEntity userEntity, Model model,
-			HttpServletRequest servletRequest) {
+	public String loginUser(@ModelAttribute("userEntity") UserEntity userEntity, Model model) {
 		String returnScreen = null;
 		userEntity = sessionManagmentService.getUserForLogin(userEntity);
 		if (userEntity != null) {
@@ -99,9 +99,17 @@ public class SignInController {
 	}
 
 	@RequestMapping(value = "user/addUserAddress", method = RequestMethod.POST)
-	public @ResponseBody String addUserAddress(@ModelAttribute("addressEntity") AddressEntity addressEntity) {
-		sessionManagmentService.addUserAddress(addressEntity);
-		return "true";
+	public @ResponseBody String addUserAddress(@ModelAttribute("addressEntity") AddressEntity addressEntity,
+			@RequestParam("uqi") String uqi, HttpSession session) {
+		boolean isUserActive = sessionController.isUserSessionActive(session);
+		boolean isUUIDValid = ((String) session.getAttribute("UNIQUE_ID")) != null
+				&& ((String) session.getAttribute("UNIQUE_ID")).equalsIgnoreCase(uqi) ? true : false;
+		String response = "false";
+		if (isUserActive && isUUIDValid) {
+			sessionManagmentService.addUserAddress(addressEntity);
+			response = "true";
+		}
+		return response;
 	}
 
 	@RequestMapping(value = "logout")

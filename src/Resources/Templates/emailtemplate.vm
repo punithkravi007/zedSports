@@ -1,0 +1,85 @@
+<html>
+
+<body style="font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;">
+	<div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;padding: 10px;padding-right: 0px;">
+        <p>Hi, $USER_NAME !!</p>
+        <p>We are preparing your order. We are trying our best to deliver your order at the earliest.</p>
+        <p>In the meantime, you can track your order below.</p>
+        <p>-- Zed.</p>
+    </div>
+    <div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;text-align: center;">
+        <img style="text-align: center;margin-top: 2px;" height="80px" width="80px" src="https://i.pinimg.com/originals/12/3e/09/123e09d1f914a8c8258de2da166192be.gif">
+        <p><b>Order Confirmed</b></p>
+        <img src="https://ci5.googleusercontent.com/proxy/6tDMPTQqyR126QTsuVoimvGMVxLOnh4l4R_l2hEBDCXAhs5gT4Q1U3Cze6hgDjPzjd2o5z0wokDxCzTV2QA7SBM3TC64qznS86L_4DBf-LM_CY_gY-CBKKhiPzXZSwlwLSCMXZg5wXFe1BVLAHnDKXBbL7Tc2PkzF1py4uThbFCCnceXd7VmZLrqSrG0vP4uuJL6WZdbaL8I=s0-d-e1-ft#https://myntracrm.myntassets.com/crm-assets/email/bea3355a-b079-4d4d-a1aa-94dc7963cbca1536657180822-mailer-order-confirmed-status.png" height="100px" width="400px;">
+    </div>
+    <div style="width: 91%;margin-left: 0px;margin-right: 0px; margin-top: 5px;">
+        <div style="width: 100%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid;text-align: center;background-color: powderblue;">
+            <div style="padding: 10px">
+	            <h4>Your Order Details:</h4>
+	            <p>Order no : $ORDER_CODE</p>
+	            <center>
+	                <div style="width:150px;height: 30px;background-color: #ef406d;padding-top: 8px;color: white;"><a href="http://localhost:8080/Zed-Sports/" style="text-decoration: none;color: white;text-transform: uppercase;letter-spacing: 1.2px;">Track Order</a></div>
+	            </center>
+            </div>
+        </div>
+        #foreach( $ORDER in $OREDRS )
+        	<div style="width: 100%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid;box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;">
+	            <div style="display: inline-block;padding: 10px;"><img src="https://apps.shopifycdn.com/listing_images/1a0542b10683867c0dee41356f5cbf07/icon/7dfe372b8b05756fcb4079477fbf221c.png" height="120px" width="100px;"></div>
+	            <div style="display: inline-block">
+	                <p><b>Product Name : </b> $ORDER.productName</p>
+	                <p><b>Product Code : </b> $ORDER.productId</p>
+	                <p><b>Price : </b><s style="color:red">&#8377;$ORDER.originalAmount</s>&nbsp;&nbsp;&nbsp;<span style="color:green">&#8377;$ORDER.offerAmount</span></p>
+	                <p><b>Product Category : </b> $ORDER.productName</p>
+	                <p><b>Gender : </b> $ORDER.gender&nbsp;&nbsp;&nbsp; <b>Size : </b> $ORDER.size&nbsp;&nbsp;&nbsp; <b>Quantity : </b>$ORDER.quantity</p>
+	            </div>
+        	</div>
+		#end
+    </div>
+    <div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid">
+        <center>
+            <div>
+                <div>
+                    <h4 style="text-transform: uppercase;color: darkcyan">Delivery Address</h4>
+                    <p>$DELIVERY_ADDRESS</p><br>
+                </div>
+            </div>
+        </center>
+        <center>
+            <div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid orange;"></div>
+        </center>
+        <center>
+            <div style="width: 400px;">
+                <h4 style="text-transform: uppercase;color: darkcyan">Billing Details</h2>
+                <table>
+                    <tr style="margin: 0px">
+                        <td style="border-left:1px solid;border-top:1px solid;padding: 10px;width: 200px">Bag Amount</td>
+                        <td style="border-right:1px solid;border-top:1px solid;padding: 5px;"><font color="red">&#8377;$BAG_PRICE</font></td>
+                    </tr>
+                    <tr style="margin: 0px">
+                        <td style="border-left: 1px solid; padding: 10px;">Offer Amount</td>
+                        <td style="border-right: 1px solid;padding: 5px;"><font color="green">&#8377;$OFFER_PRICE</font></td>
+                    </tr>
+                    <tr>
+                        <td style="border-left: 1px solid; padding: 10px;">Billed Amount</td>
+                        <td style="border-right: 1px solid;padding: 5px;"><font color="green">&#8377;$OFFER_PRICE</font></td>
+                    </tr>
+                    <tr>
+                        <td style="border-left: 1px solid; padding: 10px;border-bottom: 1px solid">Delivery Charge</td>
+                        <td style="border-bottom:1px solid;border-right: 1px solid; padding: 5px;"><font color="orange">&#8377;120</font></td>
+                    </tr>
+                    <tr>
+                        <td style="border-left: 1px solid; padding: 10px;border-bottom: 1px solid"><b>Total Amount</b></td>
+                        <td style="border-bottom:1px solid;border-right: 1px solid; padding: 5px;"><font color="brown"><b>&#8377;$OFFER_PRICE</b></font></td>
+                    </tr>
+                </table>
+            </div>
+        </center>
+        <div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid orange;"></div>
+        <center>
+            <p style="margin: 5px;">We are committed to serving you with utmost safety.</p>
+        </center>
+        <div style="width: 90%;margin-left: 5px;margin-right: 10px; margin-top: 10px;border: 1px solid orange;margin-bottom: 10px;"></div>
+    </div>
+</body>
+
+</html>

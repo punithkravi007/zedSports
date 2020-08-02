@@ -40,10 +40,12 @@ public class userSessionManagmentService {
 
 	public UserEntity getUserForLogin(UserEntity userEntity) {
 		userEntity = sessionManagmentRepository.getUniqueUser(userEntity.getUserMobileNumber(), "LOGIN",userEntity.getUserPasword());
-		List<AddressEntity> addressEntity = sessionManagmentRepository.getUserAddress(userEntity.getUserId());
-		List<QueriesEntity> queriesEntities = queryRepository.getAllUserSpecificQueries(userEntity);
-		userEntity.setAddressEntity(addressEntity);
-		userEntity.setQueriesEntities(queriesEntities);
+		if(userEntity!=null){
+			List<AddressEntity> addressEntity = sessionManagmentRepository.getUserAddress(userEntity.getUserId());
+			List<QueriesEntity> queriesEntities = queryRepository.getAllUserSpecificQueries(userEntity);
+			userEntity.setAddressEntity(addressEntity);
+			userEntity.setQueriesEntities(queriesEntities);
+		}
 		return userEntity;
 	}
 	

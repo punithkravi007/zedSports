@@ -45,8 +45,8 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label for="projectinput5">Existing Tag</label> <select
-								id="projectinput5" name="interested" class="form-control">
+							<label for="productTags">Existing Tag</label> <select
+								id="productTags" name="interested" class="form-control">
 
 							</select>
 						</div>
@@ -54,8 +54,8 @@
 
 					<div class="col-md-4">
 						<div class="form-group">
-							<label for="projectinput6">Add New Tag</label> <input
-								type="text" id="projectinput6" class="form-control"
+							<label for="newProductTag">Add New Tag</label> <input
+								type="text" id="newProductTag" class="form-control"
 								placeholder="Enter Tag Name" name="lname">
 						</div>
 					</div>
@@ -71,20 +71,18 @@
 		</div>
 	</div>
 </div>
-<spring:url value="/Resources/js/vendor/jquery-3.2.1.min.js"
-	var="JQUERY_JS" />
-<script src="${JQUERY_JS}"></script>
 <script>
 	$(document).ready(function() {
 		$("#tag-add-success").hide();
 		$("#tag-add-failure").hide();
-		dropdownService("#projectinput5","${pageContext.request.contextPath}/products/getTags", "POST", "", "TAGS");
+		var param = "uqi="+"${UNIQUE_ID}";
+		dropdownService("#productTags","${pageContext.request.contextPath}/products/getTags", "POST", param, "TAGS");
 	});
 	
 	async function addProductTag(){
-		var enteredTag = $("#projectinput6").val();
+		var enteredTag = $("#newProductTag").val();
 		if(enteredTag!=null && enteredTag != "undefined" && enteredTag.length > 0){
-			var param = "tag="+enteredTag;
+			var param = "tag="+enteredTag+"&"+"uqi="+"${UNIQUE_ID}";
 			var status = await serviceCall("${pageContext.request.contextPath}/products/addNewTag","POST",param);
 			if(status == "true"){
 				$("#tag-add-success").show();
@@ -94,8 +92,9 @@
 				$("#tag-add-failure").show();
 			}
 		}
-		dropdownService("#projectinput5","${pageContext.request.contextPath}/products/getTags", "POST", "", "TAGS");
-		$("#projectinput6").val("");
+		var param = "uqi="+"${UNIQUE_ID}";
+		dropdownService("#productTags","${pageContext.request.contextPath}/products/getTags", "POST", param, "TAGS");
+		$("#newProductTag").val("");
 	}
 	
 </script>

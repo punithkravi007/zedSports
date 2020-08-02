@@ -1,7 +1,5 @@
 package com.ecommerce.zedSports.Entities;
 
-import java.util.Arrays;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -251,7 +249,6 @@ public class OrderViewEntity {
 	public void setBinaryPhoto3(String binaryPhoto3) {
 		this.binaryPhoto3 = binaryPhoto3;
 	}
-	
 	@Override
 	public String toString() {
 		return "OrderViewEntity [id=" + id + ", orderId=" + orderId + ", productId=" + productId + ", productName="
@@ -260,9 +257,6 @@ public class OrderViewEntity {
 				+ ", billedAmount=" + billedAmount + ", createdDate=" + createdDate + ", shippingStatus="
 				+ shippingStatus + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", phone=" + phone + ", gender=" + gender + ", dob=" + dob + ", doj=" + doj
-				+ ", isUserActive=" + isUserActive + ", productPhoto1=" + Arrays.toString(productPhoto1)
-				+ ", productPhoto2=" + Arrays.toString(productPhoto2) + ", productPhoto3="
-				+ Arrays.toString(productPhoto3) + ", binaryPhoto1=" + binaryPhoto1 + ", binaryPhoto2=" + binaryPhoto2
-				+ ", binaryPhoto3=" + binaryPhoto3 + "]";
+				+ ", isUserActive=" + isUserActive + "]";
 	}
 }

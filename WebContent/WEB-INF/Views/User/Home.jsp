@@ -1,3 +1,5 @@
+<%@ taglib prefix="core" uri="coreTags"%>
+<input type="hidden" value="${ACTIVE_PRODUCTS}" id="productsG">
 <div class="slider__container slider--one bg__cat--3">
 	<div class="slide__container slider__activation__wrap owl-carousel">
 		<!-- Start Single Slide -->
@@ -116,47 +118,47 @@
 <!-- End Product Area -->
 <script>
 $(document).ready(function() {
-	 getAllProducts();
-	 var user = '${USER_ENTITY}';
+	getAllProducts();
 });
 
+var getAllProducts = async function() {
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
+	 response = JSON.parse(response);
+	 response = getAllActiveProducts(response);
+	 appendBestSeller(response);
+	 appendNewArrivals(response);
+}
 
-	var getAllProducts = async function() {
-		 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "GET", "");
-		 response = JSON.parse(response);
-		 response = getAllActiveProducts(response);
-		 appendBestSeller(response);
-		 appendNewArrivals(response);
-	}
+var getAllActiveProducts = function(products) {
+	 return products.filter(e => e.productIsActive == '1');
+}
 
-	var getAllActiveProducts = function(products) {
-		 return products.filter(e => e.productIsActive == '1');
-	}
 
-	var appendNewArrivals = function(soretdProducts) {
-		 $("#new-arrivals").empty();
+var appendNewArrivals = function(soretdProducts) {
+	$("#new-arrivals").empty();
 
-	 	var productDiv = "<div class='product__list clearfix mt--30'>";
-			 for (var prod = 0, count = 8; prod < soretdProducts.length && count > 0; prod++, count--) {
-				 productDiv = productDiv + "<div class='col-md-3 col-sm-4' style='margin-top:5px;'>" +
-				   "<div class='product-grid'>" +
-				   "<div class='product-image'>" +
-				   "<a href='${pageContext.request.contextPath}/product?prodId=" + soretdProducts[prod].productId + "'>" +
-				   "<img class='pic-1' src='" + soretdProducts[prod].photoEntity.binaryPhoto1 + "'>" +
-				   "<img class='pic-2' src='" + soretdProducts[prod].photoEntity.binaryPhoto2 + "'>" +
-				   "</div>" +
-				   "<div class='product-content' style='margin-bottom:15px'>" +
-				   "<h3 class='title'><a href='#'>" + soretdProducts[prod].productName + "</a></h3>" +
-				   "<div class='price'>" + soretdProducts[prod].productOfferPrice +
-				   "<span>" + soretdProducts[prod].productOriginalPrice + "</span>" +
-				   "<div class='row'>"+
-				   "<div class='col-sm-6'><a class='btn btn-success' style='border-radius:0px;width:40px;' onclick='addProductToWishList("+soretdProducts[prod].productId+")' data-tip='Add to Wishlist'><i class='fa fa-shopping-bag'></i></a></div>"+
-				   "<div class='col-sm-6'><a class='btn btn-default' style='border-radius:0px;width:40px;background-color:#ef5777;color:white;font-size:16px;' onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></div>"+
-				   "</div>"+
-				   "</div>" +
-				   "</div>" +
-				   "</div>" +
-				   "</div>";
+	var productDiv = "<div class='product__list clearfix mt--30'>";
+		for (var prod = 0, count = 8; prod < soretdProducts.length && count > 0; prod++, count--) {
+			productDiv = productDiv + "<div class='col-md-3 col-sm-4' style='margin-top:5px;'>" +
+					"<div class='product-grid'>" +
+				    "<div class='product-image'>" +
+				        "<a href='${pageContext.request.contextPath}/product?prodId=" + soretdProducts[prod].productId + "'>" +
+				            "<img class='pic-1' src='" + soretdProducts[prod].photoEntity.binaryPhoto1 + "'>" +
+				            "<img class='pic-2' src='" + soretdProducts[prod].photoEntity.binaryPhoto2 + "'>" +
+				            "</div>" +
+				    "<div class='product-content' style='margin-bottom:15px'>" +
+				        "<h3 class='title'><a href='#'>" + soretdProducts[prod].productName + "</a></h3>" +
+				        "<div class='price'>" + soretdProducts[prod].productOfferPrice +
+				            "<span>" + soretdProducts[prod].productOriginalPrice + "</span>" +
+				            "<div class='row'>"+
+				                "<div class='col-sm-6'><a class='btn btn-success' style='border-radius:0px;width:40px;' onclick='addProductToWishList("+soretdProducts[prod].productId+")' data-tip='Add to Wishlist'><i class='fa fa-heart'></i></a></div>"+
+				                "<div class='col-sm-6'><a class='btn btn-default' style='border-radius:0px;width:40px;background-color:#ef5777;color:white;font-size:16px;' onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></div>"+
+				                "</div>"+
+				            "</div>" +
+				        "</div>" +
+				    "</div>" +
+				"</div>";
 		 }
 	
 		 $("#new-arrivals").append(productDiv + "</div>");
@@ -168,32 +170,31 @@ $(document).ready(function() {
 		  products[product].offerPercentage = 100 - Math.round((products[product].productOfferPrice / products[product].productOriginalPrice) * 100);
 	
 		 var soretdProducts = products.sort((a, b) => b.offerPercentage - a.offerPercentage);
-		 console.log(soretdProducts);
 	
 		 var productDiv = "";
 		 for (var prod = 0, count = 8; prod < soretdProducts.length && count > 0; prod++, count--) {
 			  productDiv = productDiv + "<div class='col-md-3 col-sm-4' style='margin-top:5px;'>" +
-			   "<div class='product-grid'>" +
-			   "<div class='product-image'>" +
-			   "<a href='${pageContext.request.contextPath}/product?prodId=" + soretdProducts[prod].productId + "'>" +
-			   "<img class='pic-1' src='" + soretdProducts[prod].photoEntity.binaryPhoto1 + "'>" +
-			   "<img class='pic-2' src='" + soretdProducts[prod].photoEntity.binaryPhoto2 + "'>" +
-			   "</a>" +
-			   "<span class='product-new-label'>Sale</span>" +
-			   "<span class='product-discount-label'>" + soretdProducts[prod].offerPercentage + "%</span>" +
-			   "</div>" +
-			   "<div class='product-content' style='margin-bottom:15px'>" +
-			   "<h3 class='title'><a href='#'>" + soretdProducts[prod].productName + "</a></h3>" +
-			   "<div class='price'>" + soretdProducts[prod].productOfferPrice +
-			   "<span>" + soretdProducts[prod].productOriginalPrice + "</span>" +
-			   "<div class='row'>"+
-			   "<div class='col-sm-6'><a class='btn btn-success' style='border-radius:0px;width:40px;' onclick='addProductToWishList("+soretdProducts[prod].productId+")' data-tip='Add to Wishlist'><i class='fa fa-shopping-bag'></i></a></div>"+
-			   "<div class='col-sm-6'><a class='btn btn-default' style='border-radius:0px;width:40px;background-color:#ef5777;color:white;font-size:16px;' onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></div>"+
-			   "</div>"+
-			   "</div>" +
-			   "</div>" +
-			   "</div>" +
-			   "</div>";
+				  "<div class='product-grid'>" +
+				    "<div class='product-image'>" +
+				        "<a href='${pageContext.request.contextPath}/product?prodId=" + soretdProducts[prod].productId + "'>" +
+				            "<img class='pic-1' src='" + soretdProducts[prod].photoEntity.binaryPhoto1 + "'>" +
+				            "<img class='pic-2' src='" + soretdProducts[prod].photoEntity.binaryPhoto2 + "'>" +
+				            "</a>" +
+				        "<span class='product-new-label'>Sale</span>" +
+				        "<span class='product-discount-label'>" + soretdProducts[prod].offerPercentage + "%</span>" +
+				        "</div>" +
+				    "<div class='product-content' style='margin-bottom:15px'>" +
+				        "<h3 class='title'><a href='#'>" + soretdProducts[prod].productName + "</a></h3>" +
+				        "<div class='price'>" + soretdProducts[prod].productOfferPrice +
+				            "<span>" + soretdProducts[prod].productOriginalPrice + "</span>" +
+				            "<div class='row'>"+
+				                "<div class='col-sm-6'><a class='btn btn-success' style='border-radius:0px;width:40px;' onclick='addProductToWishList("+soretdProducts[prod].productId+")' data-tip='Add to Wishlist'><i class='fa fa-heart'></i></a></div>"+
+				                "<div class='col-sm-6'><a class='btn btn-default' style='border-radius:0px;width:40px;background-color:#ef5777;color:white;font-size:16px;' onclick='addProductToCart("+soretdProducts[prod].productId+")' data-tip='Add to Cart'><i class='fa fa-shopping-cart'></i></a></div>"+
+				                "</div>"+
+				            "</div>" +
+				        "</div>" +
+				    "</div>" +
+				"</div>";
 		 }
 	
 		 $('#best-seller-div').append(productDiv);

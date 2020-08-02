@@ -150,33 +150,37 @@
 	
 	
 	var getAllOrders = async function(){
-		
-		var orders = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders","GET","");
+		var param = "uqi="+'${UNIQUE_ID}';
+		var orders = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders","POST",param);
 		orders = JSON.parse(orders);
-		console.log(orders);
 		
-		var pendingOrderCount = 0;
-		var approvedOrderCount = 0;
-		var shippedOrderCount = 0;
-		var deliveredOrderCount = 0;
-		
-		for(key in orders){
-			var order = orders[key];
-			if(order.shippingStatus == 0)  pendingOrderCount   = pendingOrderCount+1;
-			if(order.shippingStatus == 1)  approvedOrderCount  = approvedOrderCount+1;
-			if(order.shippingStatus == 2)  shippedOrderCount   = shippedOrderCount+1;
-			if(order.shippingStatus == 3)  deliveredOrderCount = deliveredOrderCount+1;
+		if(orders != "null"){
+			var pendingOrderCount = 0;
+			var approvedOrderCount = 0;
+			var shippedOrderCount = 0;
+			var deliveredOrderCount = 0;
+			
+			for(key in orders){
+				var order = orders[key];
+				if(order.shippingStatus == 0)  pendingOrderCount   = pendingOrderCount+1;
+				if(order.shippingStatus == 1)  approvedOrderCount  = approvedOrderCount+1;
+				if(order.shippingStatus == 2)  shippedOrderCount   = shippedOrderCount+1;
+				if(order.shippingStatus == 3)  deliveredOrderCount = deliveredOrderCount+1;
+			}
+			
+			$("#pending-orders-id").html(pendingOrderCount);
+			$("#approved-orders-id").html(approvedOrderCount);
+			$('#shipped-orders-id').html(shippedOrderCount);
+			$("#delivered-orders-id").html(deliveredOrderCount);
+		}else{
+			location.reload();
 		}
-		
-		$("#pending-orders-id").html(pendingOrderCount);
-		$("#approved-orders-id").html(approvedOrderCount);
-		$('#shipped-orders-id').html(shippedOrderCount);
-		$("#delivered-orders-id").html(deliveredOrderCount);
 	}
 	
 	var getAllProducts = async function(){
-		var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts","GET","");
-		response = JSON.parse(response);
+		 var param = "uqi="+"${UNIQUE_ID}";
+		 var response = await serviceCall("${pageContext.request.contextPath}/products/getAllProducts", "POST", param);
+		 response = JSON.parse(response);
 		
 		var activeProducts = response.filter(e => e.productIsActive == 1);
 		var inActiveProducts = response.filter(e => e.productIsActive == 0);
@@ -189,13 +193,11 @@
 			var prodcategory = response[product].productCategory;
 			categories[prodcategory] = categories[prodcategory]!=undefined ? categories[prodcategory]+1 : 1;
 		}
-		
 		categoryCounter(categories);
 		productsTable(response);
 	}
 	
 	var productsTable = function(products){
-		
 		$("#productView").empty();
 		var row;
 		for (var product = 0; product < products.length; product++) {
@@ -208,7 +210,6 @@
 			"<td class='text-truncate'>"+products[product].productGender+"</td>"+
 		"</tr>";
 		}
-		
 		$("#productView").append(row);
 	}
 	

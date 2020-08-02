@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -26,10 +27,10 @@ public class ProductManagmentRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<TagEntity> getProductTags(TagEntity tagEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		List<TagEntity> tags = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria tagCriteria = session.createCriteria(TagEntity.class);
 			if (tagEntity != null) {
 				Criterion tagCriterion = Restrictions.eq("tag", tagEntity.getTag());
@@ -48,10 +49,10 @@ public class ProductManagmentRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<CategoryEntity> getProductCategories(CategoryEntity categoryEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		List<CategoryEntity> categories = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria categoryCriteria = session.createCriteria(CategoryEntity.class);
 			if (categoryEntity != null) {
 				Criterion categoryCriterion = Restrictions.eq("category", categoryEntity.getCategory());
@@ -69,10 +70,10 @@ public class ProductManagmentRepository {
 	}
 
 	public TagEntity getTagFromId(int tagId) {
-		Session session = null;
+		StatelessSession session = null;
 		TagEntity tag = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria tagCriteria = session.createCriteria(TagEntity.class);
 			Criterion tagCriterion = Restrictions.eq("tagId", tagId);
 			tagCriteria.add(tagCriterion);
@@ -89,10 +90,10 @@ public class ProductManagmentRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<ProductTagEntity> getMappedProductTags(ProductEntity productEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		List<ProductTagEntity> tags = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria tagCriteria = session.createCriteria(ProductTagEntity.class);
 			Criterion tagCriterion = Restrictions.eq("productId", productEntity.getProductId());
 			tagCriteria.add(tagCriterion);
@@ -108,15 +109,15 @@ public class ProductManagmentRepository {
 	}
 
 	public boolean addNewTag(TagEntity tagEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		boolean returnStatus = false;
 		try {
 			List<TagEntity> tags = getProductTags(tagEntity);
 			if (tags.size() == 0) {
-				session = _sessionFactory.openSession();
+				session = _sessionFactory.openStatelessSession();
 				transaction = session.beginTransaction();
-				session.save(tagEntity);
+				session.insert(tagEntity);
 				transaction.commit();
 				returnStatus = true;
 			}
@@ -131,15 +132,15 @@ public class ProductManagmentRepository {
 	}
 
 	public boolean addNewCategory(CategoryEntity categoryEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		boolean returnStatus = false;
 		try {
 			List<CategoryEntity> categories = getProductCategories(categoryEntity);
 			if (categories.size() == 0) {
-				session = _sessionFactory.openSession();
+				session = _sessionFactory.openStatelessSession();
 				transaction = session.beginTransaction();
-				session.save(categoryEntity);
+				session.insert(categoryEntity);
 				transaction.commit();
 				returnStatus = true;
 			}
@@ -156,17 +157,16 @@ public class ProductManagmentRepository {
 
 	@SuppressWarnings("unchecked")
 	public List<ProductEntity> getProductEntity(ProductEntity productEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		List<ProductEntity> products = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria productCriteria = session.createCriteria(ProductEntity.class);
 			if (productEntity != null) {
 				Criterion productCriterion = Restrictions.eq("productCode", productEntity.getProductCode());
 				productCriteria.add(productCriterion);
 			}
 			products = productCriteria.list();
-			System.out.println(products);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -178,10 +178,10 @@ public class ProductManagmentRepository {
 	}
 
 	public ProductEntity getProductEntityOnId(ProductEntity productEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		ProductEntity product = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria productCriteria = session.createCriteria(ProductEntity.class).setMaxResults(1);
 			Criterion productCriterion = Restrictions.eq("productId", productEntity.getProductId());
 			productCriteria.add(productCriterion);
@@ -218,12 +218,12 @@ public class ProductManagmentRepository {
 	}
 
 	public void mapTagToProduct(ProductTagEntity productTagEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
-			session.save(productTagEntity);
+			session.insert(productTagEntity);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -236,14 +236,12 @@ public class ProductManagmentRepository {
 	}
 
 	public void mapProductPhotos(PhotoEntity photoEntity) {
-		System.out.println("== INSERT PHOTO ==");
-		System.out.println(photoEntity);
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
-			session.save(photoEntity);
+			session.insert(photoEntity);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -255,10 +253,10 @@ public class ProductManagmentRepository {
 	}
 
 	public PhotoEntity getMappedProductPhotos(ProductEntity productEntity) {
-		Session session = null;
+		StatelessSession session = null;
 		PhotoEntity photoEntity = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			Criteria photoCriteria = session.createCriteria(PhotoEntity.class);
 			Criterion photoCriterion = Restrictions.eq("productId", productEntity.getProductId());
 			photoCriteria.add(photoCriterion);
@@ -274,10 +272,10 @@ public class ProductManagmentRepository {
 	}
 
 	public void deleteMappedProductTags(int productId) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
 			Query deleteProductCTagMapping = session
 					.createQuery("delete from ProductTagEntity where productId=:productId");
@@ -294,10 +292,10 @@ public class ProductManagmentRepository {
 	}
 
 	public void deleteMappedProductPhotos(int productId) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
 			Query deleteProductPhotoMapping = session.createQuery("delete from PhotoEntity where productId=:productId");
 			deleteProductPhotoMapping.setParameter("productId", productId);
@@ -313,10 +311,10 @@ public class ProductManagmentRepository {
 	}
 
 	public void deletedProduct(int productId) {
-		Session session = null;
+		StatelessSession session = null;
 		Transaction transaction = null;
 		try {
-			session = _sessionFactory.openSession();
+			session = _sessionFactory.openStatelessSession();
 			transaction = session.beginTransaction();
 			Query deleteProduct = session
 					.createQuery("UPDATE ProductEntity set productIsActive = :isActive WHERE productId = :productId");

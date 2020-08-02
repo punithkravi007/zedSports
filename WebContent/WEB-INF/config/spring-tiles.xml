@@ -25,10 +25,10 @@
 		<put-attribute name="body" value="/WEB-INF/Views/User/cart.jsp"></put-attribute>
 	</definition>
 
-	<definition name="zed.user.checkout" extends="zed.user.template">
+	<!-- <definition name="zed.user.checkout" extends="zed.user.template">
 		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>
 		<put-attribute name="body" value="/WEB-INF/Views/User/checkout.jsp"></put-attribute>
-	</definition>
+	</definition> -->
 
 	<definition name="zed.user.contact" extends="zed.user.template">
 		<put-attribute name="cart" value="/WEB-INF/Views/User/cartCard.jsp"></put-attribute>

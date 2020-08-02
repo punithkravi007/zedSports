@@ -33,6 +33,19 @@ public class ProductController {
 
 		return "zed.user.product-grid";
 	}
+	
+	@RequestMapping(value = "products", method = RequestMethod.GET)
+	public String viewProductsOnGender(@RequestParam("q") String gender,Model model) {
+		List<ProductEntity> productEntities = productManagmentService.getAllProducts();
+		productEntities = productEntities.stream()
+				.filter(product -> product.getProductGender().toLowerCase().charAt(0) == gender.charAt(0)
+						 && product.getProductIsActive() == 1)
+				.collect(Collectors.toList());
+		model.addAttribute("PRODUCT_ENTITY", productEntities);
+		model.addAttribute("SELECTED_GENDER", gender);
+
+		return "zed.user.product-grid";
+	}
 
 	@RequestMapping(value = "product", method = RequestMethod.GET)
 	public String viewProduct(@RequestParam("prodId") int productId, Model model) {

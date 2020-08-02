@@ -28,6 +28,7 @@
 		<mapping class="com.ecommerce.zedSports.Entities.WishlistViewEntity"/>
 		<mapping class="com.ecommerce.zedSports.Entities.CartViewEntity"/>
 		<mapping class="com.ecommerce.zedSports.Entities.QueriesEntity"/>
+		<mapping class="com.ecommerce.zedSports.Entities.ProductReviewEntity"/>
 
 	</session-factory>
 </hibernate-configuration>

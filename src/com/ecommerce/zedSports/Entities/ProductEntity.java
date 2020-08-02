@@ -42,11 +42,15 @@ public class ProductEntity {
 	private int productIsActive;
 	@Column(name="product_category")
 	private String productCategory;
+	@Transient
+	private String offerPercentage;
 
 	@Transient
 	private PhotoEntity photoEntity;
 	@Transient
 	private List<TagEntity> tagEntities;
+	@Transient
+	private List<ProductReviewEntity> reviewEntities;
 
 	public int getProductId() {
 		return productId;
@@ -150,6 +154,22 @@ public class ProductEntity {
 
 	public void setProductCategory(String productCategory) {
 		this.productCategory = productCategory;
+	}
+
+	public String getOfferPercentage() {
+		return offerPercentage;
+	}
+
+	public void setOfferPercentage(String offerPercentage) {
+		this.offerPercentage = offerPercentage;
+	}
+
+	public List<ProductReviewEntity> getReviewEntities() {
+		return reviewEntities;
+	}
+
+	public void setReviewEntities(List<ProductReviewEntity> reviewEntities) {
+		this.reviewEntities = reviewEntities;
 	}
 
 	@Override

@@ -45,7 +45,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label for="projectinput5">Existing Category</label> <select
+							<label for="existingProductCategory">Existing Category</label> <select
 								id="existingProductCategory" name="interested"
 								class="form-control">
 
@@ -73,46 +73,31 @@
 	</div>
 </div>
 
-	<spring:url value="/Resources/js/vendor/jquery-3.2.1.min.js"
-		var="JQUERY_JS" />
-	<script src="${JQUERY_JS}"></script>
-	<script>
+<script>
 	$(document).ready(function() {
 		 $("#category-add-success").hide();
 		 $("#category-add-failure").hide();
 		 $("#category-specification-add-success").hide();
 		 $("#category-specification-add-failure").hide();
-
-		 dropdownService(
-		  "#categoryForSpecification",
-		  "${pageContext.request.contextPath}/products/getCategories",
-		  "GET", "", "CATEGORY");
-		 dropdownService(
-		  "#existingProductCategory",
-		  "${pageContext.request.contextPath}/products/getCategories",
-		  "GET", "", "CATEGORY");
+		 var param = "uqi="+"${UNIQUE_ID}";
+		 dropdownService("#existingProductCategory","${pageContext.request.contextPath}/products/getCategories","POST", param, "CATEGORY");
 		});
 
 		async function addProductCategory() {
-		 var enteredCategory = $("#newCategory").val();
-		 if (enteredCategory != null && enteredCategory != "undefined" &&
-		  enteredCategory.length > 0) {
-		  var param = "category=" + enteredCategory;
-		  var status = await
-		  serviceCall(
-		   "${pageContext.request.contextPath}/products/addNewCategory",
-		   "POST", param);
-		  if (status == "true") {
-		   $("#category-add-success").show();
-		   $("#category-add-failure").hide();
-		  } else {
-		   $("#category-add-success").hide();
-		   $("#category-add-failure").show();
-		  }
-		 }
-		 dropdownService(
-		  "#existingProductCategory",
-		  "${pageContext.request.contextPath}/products/getCategories",
-		  "GET", "", "CATEGORY");
-		 $("#newCategory").val("");
-		}	</script>
+			 var enteredCategory = $("#newCategory").val();
+			 if (enteredCategory != null && enteredCategory != "undefined" && enteredCategory.length > 0) {
+				  var param = "category=" + enteredCategory+"&"+"uqi="+"${UNIQUE_ID}";
+				  var status = await serviceCall("${pageContext.request.contextPath}/products/addNewCategory","POST", param);
+				  if (status == "true") {
+					   $("#category-add-success").show();
+					   $("#category-add-failure").hide();
+				  } else {
+					   $("#category-add-success").hide();
+					   $("#category-add-failure").show();
+				  }
+			 }
+			 var param = "uqi="+"${UNIQUE_ID}";
+			 dropdownService("#existingProductCategory","${pageContext.request.contextPath}/products/getCategories","POST", param, "CATEGORY");
+			 $("#newCategory").val('');
+		}	
+</script>

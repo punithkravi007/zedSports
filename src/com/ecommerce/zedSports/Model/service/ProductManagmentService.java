@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.zedSports.Entities.CategoryEntity;
 import com.ecommerce.zedSports.Entities.PhotoEntity;
 import com.ecommerce.zedSports.Entities.ProductEntity;
+import com.ecommerce.zedSports.Entities.ProductReviewEntity;
 import com.ecommerce.zedSports.Entities.ProductTagEntity;
 import com.ecommerce.zedSports.Entities.TagEntity;
 import com.ecommerce.zedSports.Model.Repository.ProductManagmentRepository;
+import com.ecommerce.zedSports.Model.Repository.ProductReviewRepository;
 import com.ecommerce.zedSports.Util.Encrypter;
 
 @Service
@@ -20,6 +22,8 @@ public class ProductManagmentService {
 
 	@Autowired
 	private ProductManagmentRepository productManagmentRepository;
+	@Autowired
+	private ProductReviewRepository reviewRepository;
 
 	public List<TagEntity> getTags() {
 		return productManagmentRepository.getProductTags(null);
@@ -65,9 +69,10 @@ public class ProductManagmentService {
 	public List<ProductEntity> getAllProducts() {
 
 		List<ProductEntity> productEntities = productManagmentRepository.getProductEntity(null);
-
+		
 		for (Iterator<ProductEntity> iterator = productEntities.iterator(); iterator.hasNext();) {
 			ProductEntity productEntity = iterator.next();
+			productEntity.setProductDescription(productEntity.getProductDescription().replaceAll("\\s+", " "));
 			
 			List<TagEntity> tagEntities = new LinkedList<TagEntity>();
 
@@ -90,9 +95,10 @@ public class ProductManagmentService {
 				photoEntity.setBinaryPhoto3(Encrypter.convertByteToBase64Encoder(photoEntity.getProductImage3()));
 				productEntity.setPhotoEntity(photoEntity);
 			}
-			
 			productEntity.setTagEntities(tagEntities);
-
+			
+			List<ProductReviewEntity> reviewEntities = reviewRepository.getAllReviewForProduct(productEntity.getProductId());
+			productEntity.setReviewEntities(reviewEntities);
 		}
 
 		return productEntities;
@@ -105,7 +111,7 @@ public class ProductManagmentService {
 		productEntity.setProductCode(productCode);
 		productEntity = productManagmentRepository.getProductEntity(productEntity).size() > 0
 				&& productManagmentRepository.getProductEntity(productEntity) != null
-						? productManagmentRepository.getProductEntity(productEntity).get(0) : null;
+						? productManagmentRepository.getProductEntity(productEntity).get(0) : new ProductEntity();
 		List<ProductTagEntity> productTagEntities = productManagmentRepository
 				.getMappedProductTags(productEntity) != null
 						? productManagmentRepository.getMappedProductTags(productEntity)
@@ -127,6 +133,8 @@ public class ProductManagmentService {
 		if (productEntity != null) {
 			productEntity.setTagEntities(tagEntities);
 		}
+		List<ProductReviewEntity> reviewEntities = reviewRepository.getAllReviewForProduct(productEntity.getProductId());
+		productEntity.setReviewEntities(reviewEntities);
 
 		return productEntity;
 	}

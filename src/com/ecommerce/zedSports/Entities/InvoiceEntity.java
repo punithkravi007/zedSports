@@ -17,6 +17,8 @@ public class InvoiceEntity {
 	private String firstName;
 	private String lastName;
 	private String mobileNumber;
+	
+	private String orderId;
 
 	public List<OrderViewEntity> getEntities() {
 		return entities;
@@ -112,6 +114,14 @@ public class InvoiceEntity {
 				+ ", orderTotal=" + orderTotal + ", Total=" + Total + ", deliveryAddress=" + deliveryAddress
 				+ ", creationDate=" + creationDate + ", shippingStatus=" + shippingStatus + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", mobileNumber=" + mobileNumber + "]";
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 	
 }

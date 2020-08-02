@@ -13,40 +13,163 @@
 					<div class="col-sm-2"></div>
 				</div>
 			</div>
-			<div class="col-sm-9" id="address-div">
+			<div class="col-sm-9" id="user-details-div">
 				<div class="row form-group product-chooser">
-					<div class="row">
-						<div class="col-sm-4"></div>
-						<div class="col-sm-4">
+					<div class="row" style="margin: 10px">
+						<div class="col-sm-12">
 							<center>
-								<p style="font-weight: bold; color: black">Please Select the
-									delivery Address</p>
+								<p
+									style="font-weight: bold; color: black; text-transform: uppercase;">Please
+									Check the Added User Details are correct before proceeding /
+									Enter The Valid Details and Proceed Further</p>
 							</center>
 							<hr>
 						</div>
-						<div class="col-sm-4"></div>
+						<div class="col-sm-3"></div>
 					</div>
-					<core:forEach var="address" items="${USER_ENTITY.addressEntity}"
-						varStatus="loop">
-						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"
-							style="margin-top: 5px;">
-							<div class="product-chooser-item" style="height: 160px;"
-								onclick='selectAddress("${address.id}")'>
-								<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
-									<span class="title">Address-${loop.count} </span> <span
-										class="description">${address.addressOne}
-										${address.addressTwo} ${address.city} ${address.state}
-										${address.country}-${address.pincode}</span> <input
-										id="address-id-${address.id}" type="radio" name="product"
-										value="mobile_desktop">
+					<div class="row" style="margin: 10px">
+						<div class="col-sm-12">
+							<div class="panel panel-default" style="border-radius: 0px;"
+								id="user-basic-details">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="firstName">First Name</label> <input type="text"
+													class="form-control" id="firstName"
+													value="${USER_ENTITY.userFirstName}"
+													placeholder="Enter Your First Name">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="lastName">Last Name</label> <input type="text"
+													class="form-control" id="lastName"
+													value="${USER_ENTITY.userLastName}"
+													placeholder="Enter Your Last Name">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="email">Email <font
+													style="font-size: 12px" color="red">(Order Details
+														and Shipping Status will be sent to this Email)</font></label> <input
+													type="text" class="form-control" id="email"
+													value="${USER_ENTITY.userEmail }"
+													placeholder="Enter Your Email">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label for="gender">Gender</label> <select
+													class="form-control" id="gender">
+													<core:if test="${not empty USER_ENTITY.userGender}">
+														<option value="${USER_ENTITY.userGender}"
+															selected="selected">${USER_ENTITY.userGender}</option>
+													</core:if>
+													<option>--SELECT--</option>
+													<option value="Male">MALE</option>
+													<option value="Female">Female</option>
+												</select>
+											</div>
+										</div>
+									</div>
 								</div>
-								<div class="clear"></div>
 							</div>
+							<core:if test="${empty USER_ENTITY.addressEntity}">
+								<div class="panel panel-default"
+									style="margin-top: 5px; border-radius: 0px;"
+									id="user-new-address-details">
+									<div class="panel-heading">You don't have any Address to
+										select, Add new Address below.</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="address1">Address Line-1 :</label> <input
+														type="text" class="form-control"
+														style="border-radius: 0px;"
+														placeholder="Your Address Line-1" id="address1"
+														name="address_1">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="address2">Address Line-2 :</label> <input
+														type="text" class="form-control"
+														style="border-radius: 0px;"
+														placeholder="Your Address Line-2" id="address2"
+														name="address_2">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="city">City :</label> <input type="text"
+														class="form-control" style="border-radius: 0px;"
+														placeholder="Your City" id="city" name="city">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="state">State :</label> <input type="text"
+														class="form-control" style="border-radius: 0px;"
+														placeholder="Your State" id="state" name="state">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="country">Country :</label> <input type="text"
+														class="form-control" style="border-radius: 0px;"
+														placeholder="Your Country" id="country" name="country">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="pincode">Pincode :</label> <input type="text"
+														class="form-control" style="border-radius: 0px;"
+														placeholder="Your Pincode" id="pincode" name="pincode">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</core:if>
 						</div>
-					</core:forEach>
+					</div>
+					<div class="row" style="margin-left: 30px; margin-right: 30px;">
+						<core:if test="${not empty USER_ENTITY.addressEntity}">
+							<div class="panel panel-default" style="border-radius: 0px">
+								<div class="panel-heading" style="text-transform: uppercase;">Select
+									Delivery Address (Click on Address to Select)</div>
+								<div class="panel-body">
+									<core:forEach var="address"
+										items="${USER_ENTITY.addressEntity}" varStatus="loop">
+										<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"
+											style="margin-top: 5px;">
+											<div class="product-chooser-item"
+												onclick='selectAddress("${address.id}")'>
+												<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+													<span class="title">Address-${loop.count} </span> <span
+														class="description">${address.addressOne}
+														${address.addressTwo} ${address.city} ${address.state}
+														${address.country}-${address.pincode}</span> <input
+														id="address-id-${address.id}" type="radio" name="product"
+														value="mobile_desktop">
+												</div>
+												<div class="clear"></div>
+											</div>
+										</div>
+									</core:forEach>
+								</div>
+							</div>
+						</core:if>
+					</div>
 				</div>
 			</div>
-
 			<div class="col-sm-3 cart-product-price">
 				<p style="font-weight: bold; color: black">Price Details :</p>
 				<hr>
@@ -113,17 +236,21 @@
 					</div>
 				</div>
 				<div class="row" style="margin-top: 2px; padding: 20px;">
-					<a id="cart-checkout" class="btn btn-default"
-						style="background-color: #ff3f6c; width: 255px; border-radius: 0px; color: white">Checkout
-						<i class="fa fa-arrow-right" aria-hidden="true"></i>
-					</a> <a id="address-checkout" class="btn btn-default"
+					<a id="step-2-forward-id" class="btn btn-default"
+						style="background-color: lightgreen; width: 255px; border-radius: 0px; color: white">Select
+						Delivery Details&nbsp;&nbsp;&nbsp;&nbsp; <i
+						class="fa fa-arrow-right" aria-hidden="true"></i>
+					</a> <a id="order-checkout" class="btn btn-default"
 						style="background-color: #428bca; width: 255px; border-radius: 0px; color: white">Confirm
-						Address & Proceed <i class="fa fa-arrow-right" aria-hidden="true"></i>
-						<a id="cancel-checkout" class="btn btn-danger"
+						& Proceed to Checkout <i class="fa fa-arrow-right"
+						aria-hidden="true"></i>
+					</a> <a id="step-2-backward-id" class="btn btn-default"
+						style="background-color: orange; width: 255px; border-radius: 0px; color: white; margin-top: 5px;"><i
+						class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+						Go Back </a> <a id="cancel-checkout" class="btn btn-danger"
 						href="${pageContext.request.contextPath}/"
-						style="width: 255px; border-radius: 0px; color: white">Cancel<i
-							class="fa fa-wrong" aria-hidden="true"></i>
-					</a>
+						style="width: 255px; border-radius: 0px; color: white; margin-top: 5px;">Cancel<i
+						class="fa fa-wrong" aria-hidden="true"></i></a>
 				</div>
 			</div>
 		</div>
@@ -153,40 +280,72 @@
 </div>
 <script>
 var addressIdG;
+var isDeliveryAddressExistG;
 $(document).ready(function(){
 	
 	$('div.product-chooser').not('.disabled').find('div.product-chooser-item').on('click', function(){
 		$(this).parent().parent().find('div.product-chooser-item').removeClass('selected');
 		$(this).addClass('selected');
 		$(this).find('input[type="radio"]').prop("checked", true);
-		
 	});
-	
+
+	isDeliveryAddressExistG = '${USER_ENTITY.addressEntity}'.length > 3 ? true : false;
 	getCartProducts();
 	
+	$("#step-2-backward-id").hide();
+	$("#user-details-div").hide();
 	$("#address-div").hide();
 	$("#cart-div").show();
-	$("#address-checkout").hide();
+	$("#order-checkout").hide();
 	$(".cart-product-price").hide();
 	$("#empty-cart-div").hide();
 	
-	$("#cart-checkout").on({
-		"click" : checkoutProducts
+	$("#step-2-forward-id").on({
+		"click" : deliveryDetailScreeHandler
 	});
 	
-	$("#address-checkout").on({
+	$("#order-checkout").on({
 		"click" : checkoutCart
 	});
 	
 	$("#success-checkout").on({
 		"click" : redirectToHome
 	});
+	
+	$("#userAddressUpdate").on({
+        "click": addUserAddress
+    });
+	
+	$("#step-2-backward-id").on({
+		"click" : function(){
+			location.reload();
+		}
+	});
+	
 });
+
 
 var redirectToHome = function(){
 	location.replace("${pageContext.request.contextPath}/")
 }
 
+
+var addUserAddress = async function() {
+    var addressOne = $("#address1").val();
+    var addressTwo = $("#address2").val();
+    var city = $("#city").val();
+    var state = $("#state").val();
+    var country = $("#country").val();
+    var pincode = $("#pincode").val();
+    var userId = "${USER_ENTITY.userId}";
+
+    var param = "addressOne=" + addressOne + "&" + "addressTwo=" + addressTwo + "&" + "city=" + city + "&" + "state=" + state + "&" + "country=" + country + "&" + "pincode=" + pincode + "&" + "userId=" + userId+"&"+"uqi="+"${UNIQUE_ID}";
+
+    var status = await serviceCall("${pageContext.request.contextPath}/user/addUserAddress", "POST", param);
+    if (status == "true") {
+        location.reload();
+    }
+}
 
 var selectAddress = function(addressId){
 	addressIdG = addressId;
@@ -224,52 +383,37 @@ var quantityChange = function(productId){
 }
 
 var checkoutCart = async function(){
+
+	var isValidDeliveryDetails = validateDeliveryDetails();
 	
-	var sizeElements = $(".product-size-cls");
-		
-		var products = [];
-		
-		for (var productSize = 0; productSize < sizeElements.length; productSize++) {
-			var elementId = sizeElements[productSize].id;
-			productId = elementId.split("-")[2];
-			var size = $("#prod-size-"+productId).children("option:selected").val();
-			var quantity = $("#prod-quantity-"+productId).val();
-			var originalPrice = $("#prod-bag-price-"+productId).html().split(".")[1];
-			var offerPrice = $("#prod-offer-price-"+productId).html().split(".")[1];
-			
-			var product = {};
-			product.size = size;
-			product.quantity = quantity;
-			product.productId = productId
-			product.originalPrice = originalPrice;
-			product.offerPrice = offerPrice;
-			product.addressId = addressIdG
-			products.push(product);
-		}
-		
-		param = "order="+JSON.stringify(products);
-		var response = await serviceCall("${pageContext.request.contextPath}/checkout/placeOrder","POST",param);
-		if(response != "false"){
-			$("#bookingId").html(response);
-			$("#myModal").modal();
-		}else{
-			console.log("FAILED");
-		}
 }
 
 
-var checkoutProducts = function(){
-	$("#address-div").show();
+const validateDeliveryDetails = () => {
+	
+	var firstName  = $("#firstName").val();
+	var lastName  = $("#lastName").val();
+	var emailName  = $("#email").val();
+	var gender  = $("#gender").val();
+	
+	console.log(firstName,lastName, email,gender);
+}
+
+
+var deliveryDetailScreeHandler = function(){
+	$("#user-details-div").show();
+	$("#step-2-backward-id").show();
+	$("#step-2-forward-id").hide();
+	$("#address-div").hide();
 	$("#cart-div").hide();
 	$("#cart-checkout").hide();
-	$("#address-checkout").show();
+	$("#order-checkout").show();
 }
 
 var getCartProducts = async function (){
-	var param = "userId="+$("#userIdG").val();
+	var param = "userId="+'${USER_ENTITY.userId}'+"&"+"uqi="+"${UNIQUE_ID}";
 	var cart = await serviceCall("${pageContext.request.contextPath}/cart/getAllProductsFromCart","POST",param);
 	cart = JSON.parse(cart);
-	console.log(cart);
 	if(cart.length>0){
 		appendProductsToCart(cart);
 		$(".cart-product-price").show();
@@ -280,7 +424,7 @@ var getCartProducts = async function (){
 
 
 var removeProductFromCart = async function(productId){
-	var param = "productId="+productId;
+	var param = "productId="+productId+"&"+"userId="+'${USER_ENTITY.userId}'+"&"+"uqi="+"${UNIQUE_ID}";
 	var response = await serviceCall("${pageContext.request.contextPath}/cart/removeProduct","POST",param);
 	if(response == "true"){
 		$("#cart-div").empty();
@@ -288,7 +432,12 @@ var removeProductFromCart = async function(productId){
 	}else{
 		alert("Removing product from the cart failed. Please try again.");
 	}
-	getCartProducts();
+	location.reload();
+}
+
+var moveProductToWishlist = function(productId){
+	addProductToWishList(productId);
+	removeProductFromCart(productId);
 }
 
 var appendProductsToCart = function(products){
@@ -354,7 +503,7 @@ var appendProductsToCart = function(products){
 							"<a onclick='removeProductFromCart("+products[product].productId+")' class='btn btn-danger'"+
 								"style='width: 150px; border-radius: 0px; margin-top: 2px;margin-right:1px;'>Remove</a>"+
 							"<a class='btn btn-info'"+
-								"style='width: 150px; border-radius: 0px; margin-top: 2px;'>Move"+
+								"style='width: 150px; border-radius: 0px; margin-top: 2px;' onclick='moveProductToWishlist("+products[product].productId+")'>Move"+
 								"To Wishlist</a>"+
 						"</center>"+
 					"</div>"+
