@@ -33,7 +33,7 @@ var appendPendingQueries = function(response){
 					"<div class='panel panel-default'>"+
 						    "<div class='panel-heading' role='tab' id='heading"+query+"'>"+
 						        "<h5 class='panel-title'>"+
-						            "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse"+query+"' aria-expanded='true' aria-controls='collapse"+query+"'>"+
+						            "<a role='button' style='font-size:12px' data-toggle='collapse' data-parent='#accordion' href='#collapse"+query+"' aria-expanded='true' aria-controls='collapse"+query+"'>"+
 						                "<div class='row'>"+
 						                    "<div class='col-sm-4'>"+
 						                        "<font color='black' style='font-style: oblique;'><b>Name : </b></font>"+
@@ -59,7 +59,7 @@ var appendPendingQueries = function(response){
 						        "</h5>"+
 						    "</div>"+
 						    "<div id='collapse"+query+"' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading"+query+"'>"+
-						        "<div class='panel-body' style='border: 1px solid; padding: 20px; background-color: beige;'>"+
+						        "<div class='panel-body' style='border: 1px solid; padding: 20px; background-color: ghostwhite;'>"+
 						            "<div class='row'>"+
 						                "<div class='col-sm-12' style='font-style: oblique;'>"+response[query].message+"</div>"+
 						            "</div>"+

@@ -58,27 +58,27 @@ var appendPendingOrders = function(orders){
 		for(var product=0;product<products.length;product++){
 			var savings = parseInt(products[product].originalAmount) - parseInt(products[product].offerAmount);
 			productsDiv = productsDiv+
-					"<div class='row'>"+
+					"<div class='row' style='padding:10px;margin-right:10px;color:black;background-color:white'>"+
                         "<div class='col-sm-2'>"+
                             "<img alt='' height='100px' width='100px;' src='"+products[product].binaryPhoto1+"'>"+
                         "</div>"+
                         "<div class='col-sm-8'>"+
                             "<div class='row'>"+
-                                "<div class='col-sm-3' style='text-align: left;'>Product Name :</div>"+
+                                "<div class='col-sm-3' style='text-align: left;font-weight:bold'>Product Name:</div>"+
                                 "<div class='col-sm-6' style='text-align: left;'>"+products[product].productName+"</div>"+
-                                "<div class='col-sm-2' style='text-align: left;'>Product ID :</div>"+
+                                "<div class='col-sm-2' style='text-align: left;font-weight:bold'>Product ID:</div>"+
                                 "<div class='col-sm-1' style='text-align: left;'>"+products[product].productId+"</div>"+
                             "</div>"+
                             "<div class='row'>"+
-                                "<div class='col-sm-3' style='text-align: left;'>Size :</div>"+
+                                "<div class='col-sm-3' style='text-align: left;font-weight:bold'>Size:</div>"+
                                 "<div class='col-sm-6' style='text-align: left;'>"+products[product].size+"</div>"+
-                                "<div class='col-sm-2' style='text-align: left;'>Quantity:</div>"+
+                                "<div class='col-sm-2' style='text-align: left;font-weight:bold'>Quantity:</div>"+
                                 "<div class='col-sm-1' style='text-align: left;'>"+products[product].quantity+"</div>"+
                             "</div>"+
                             "<div class='row'>"+
-                                "<div class='col-sm-3' style='text-align: left;'>Original Price :</div>"+
+                                "<div class='col-sm-3' style='text-align: left;font-weight:bold'>Original Price:</div>"+
                                 "<div class='col-sm-6' style='text-align: left;'>"+products[product].originalAmount+"</div>"+
-                                "<div class='col-sm-2' style='text-align: left;'>Offer Price :</div>"+
+                                "<div class='col-sm-2' style='text-align: left;font-weight:bold'>Offer Price:</div>"+
                                 "<div class='col-sm-1' style='text-align: left;'>"+products[product].offerAmount+"</div>"+
                             "</div>"+
                         "</div>"+
@@ -88,7 +88,7 @@ var appendPendingOrders = function(orders){
 		orderDiv = orderDiv+"<div class='col-sm-12'><div class='panel panel-default'>"+
 						            "<div class='panel-heading' role='tab' id='headingOne8"+key+"'>"+
 						                "<h4 class='panel-title'>"+
-						                    "<a style='border-radius: 0px;' role='button' data-toggle='collapse' data-parent='#accordion8' href='#collapseOne8"+key+"' aria-expanded='true' aria-controls='collapseOne8"+key+"'>"+
+						                    "<a style='border-radius: 0px;font-size:12px;' role='button' data-toggle='collapse' data-parent='#accordion8' href='#collapseOne8"+key+"' aria-expanded='true' aria-controls='collapseOne8"+key+"'>"+
 						                        "<div class='row'>"+
 						                            "<div class='col-sm-4'>"+
 						                                "<div class='row' style='margin-top: 10px;'>"+

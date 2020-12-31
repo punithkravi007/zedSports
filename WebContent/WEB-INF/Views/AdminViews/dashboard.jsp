@@ -153,21 +153,23 @@
 		var param = "uqi="+'${UNIQUE_ID}';
 		var orders = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders","POST",param);
 		orders = JSON.parse(orders);
+		console.log(orders)
+		
+		var pendingOrderCount = 0;
+		var approvedOrderCount = 0;
+		var shippedOrderCount = 0;
+		var deliveredOrderCount = 0;
 		
 		if(orders != "null"){
-			var pendingOrderCount = 0;
-			var approvedOrderCount = 0;
-			var shippedOrderCount = 0;
-			var deliveredOrderCount = 0;
-			
-			for(key in orders){
-				var order = orders[key];
-				if(order.shippingStatus == 0)  pendingOrderCount   = pendingOrderCount+1;
-				if(order.shippingStatus == 1)  approvedOrderCount  = approvedOrderCount+1;
-				if(order.shippingStatus == 2)  shippedOrderCount   = shippedOrderCount+1;
-				if(order.shippingStatus == 3)  deliveredOrderCount = deliveredOrderCount+1;
+			for(i=0;i<orders.length;i++){		
+				for(key in orders[i]){
+					var order = orders[i][key];
+					if(order.shippingStatus == 0)  pendingOrderCount   = pendingOrderCount+1;
+					if(order.shippingStatus == 1)  approvedOrderCount  = approvedOrderCount+1;
+					if(order.shippingStatus == 2)  shippedOrderCount   = shippedOrderCount+1;
+					if(order.shippingStatus == 3)  deliveredOrderCount = deliveredOrderCount+1;
+				}
 			}
-			
 			$("#pending-orders-id").html(pendingOrderCount);
 			$("#approved-orders-id").html(approvedOrderCount);
 			$('#shipped-orders-id').html(shippedOrderCount);
