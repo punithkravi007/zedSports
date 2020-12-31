@@ -22,9 +22,9 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	public List<List<InvoiceEntity>> getAllOrders(UserEntity userEntity) {
+	public List<Map<String, InvoiceEntity>> getAllOrders(UserEntity userEntity) {
 
-		List<List<InvoiceEntity>> orders = new LinkedList<List<InvoiceEntity>>();
+		List<Map<String, InvoiceEntity>> orders = new LinkedList<Map<String, InvoiceEntity>>();
 
 		List<OrderViewEntity> orderViewEntities = orderRepository.getAllOrdersForUser(userEntity);
 
@@ -37,6 +37,7 @@ public class OrderService {
 		List<OrderViewEntity> deliveredOrders = orderViewEntities.stream().filter(e -> e.getShippingStatus() == 3)
 				.collect(Collectors.toList());
 
+		
 		orders.add(regroupOrderEntities(pendingOrders));
 		orders.add(regroupOrderEntities(approvedOrders));
 		orders.add(regroupOrderEntities(shippedOrders));
@@ -45,7 +46,7 @@ public class OrderService {
 		return orders;
 	}
 
-	public List<InvoiceEntity> regroupOrderEntities(List<OrderViewEntity> orderViewEntities) {
+	public Map<String, InvoiceEntity> regroupOrderEntities(List<OrderViewEntity> orderViewEntities) {
 
 		for (Iterator<OrderViewEntity> iterator = orderViewEntities.iterator(); iterator.hasNext();) {
 			OrderViewEntity orderViewEntity = iterator.next();
@@ -127,8 +128,8 @@ public class OrderService {
 				map.put(orderViewEntity.getOrderId(), invoiceEntity);
 			}
 		}
-		List<InvoiceEntity> arrayList = new LinkedList<InvoiceEntity>(map.values());
-		return arrayList;
+		
+		return map;
 	}
 
 	public void updateOrderStatus(String orderCode, String status) {

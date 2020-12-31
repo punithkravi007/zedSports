@@ -15,8 +15,9 @@ $(document).ready(function(){
 });
 
 var getPendingOrders = async function(){
-	var response = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders","GET","");
-	response = JSON.parse(response);
+	var param = "uqi="+"${UNIQUE_ID}";
+	var response = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders", "POST", param);
+	response = JSON.parse(response)[2];
 	
 	var map = new Map();
 	

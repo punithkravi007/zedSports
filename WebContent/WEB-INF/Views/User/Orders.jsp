@@ -63,7 +63,7 @@
 	</div>
 </section>
 <script>
-var allOrdersG;
+var allOrdersG = [];
 var pendingOrdersG;
 var approvedOrdersG;
 var deliveredOrdersG;
@@ -139,11 +139,18 @@ var getAllOrders = async function(){
 	var response = await serviceCall("${pageContext.request.contextPath}/orders/getOrders","POST",param);
 	response = JSON.parse(response);
 	
-	pendingOrdersG = response[0];
+	pendingOrdersG = response[0]!="" && response[0]!=null && response[0]!="undefined" ? response[0] :"[]" ;
 	approvedOrdersG = response[1];
 	shippedOrder = response[2];
 	deliveredOrdersG = response[3];
-	allOrdersG = pendingOrdersG.concat(approvedOrdersG).concat(deliveredOrdersG).concat(shippedOrder);
+	
+	allOrdersG.push(pendingOrdersG)
+	allOrdersG.push(approvedOrdersG)
+	allOrdersG.push(deliveredOrdersG)
+	allOrdersG.push(shippedOrder)
+	
+	console.log(allOrdersG)
+	//allOrdersG = pendingOrdersG.concat(approvedOrdersG).concat(deliveredOrdersG).concat(shippedOrder);
 	
 	appendOrders("#pending-invoice",pendingOrdersG);
 	appendOrders("#approved-invoice",approvedOrdersG);
@@ -157,18 +164,18 @@ var appendOrders = function(elementId,orders){
 	var invoiceDiv = "";
 	
 	
-	for (var i = 0; i < orders.length; i++) {
-		var bagTotal = orders[i]["bagTotal"];
-		var creationDate = orders[i]['creationDate'];
-		var creationDate = orders[i]['creationDate'];
-		var offerTotal = orders[i]['offerTotal'];
-		var orderTotal = orders[i]['orderTotal'];
-		var total = orders[i]['total'];
-		var products = orders[i]['entities'];
-		var deliveryAddress = orders[i]['deliveryAddress'];
-		var shippingStatus = orders[i]['shippingStatus'];
+	for(key in orders) {
+		var bagTotal = orders[key]["bagTotal"];
+		var creationDate = orders[key]['creationDate'];
+		var creationDate = orders[key]['creationDate'];
+		var offerTotal = orders[key]['offerTotal'];
+		var orderTotal = orders[key]['orderTotal'];
+		var total = orders[key]['total'];
+		var products = orders[key]['entities'];
+		var deliveryAddress = orders[key]['deliveryAddress'];
+		var shippingStatus = orders[key]['shippingStatus'];
 		var shippingStatusColor;
-		var id = orders[i]["id"];
+		var id = orders[key]["id"];
 		var key;
 		
 		if(shippingStatus == '3'){

@@ -13,20 +13,22 @@ $(document).ready(function(){
 });
 
 var getPendingOrders = async function(){
-	var response = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders","GET","");
-	response = JSON.parse(response);
+	 var param = "uqi="+"${UNIQUE_ID}";
+	 var response = await serviceCall("${pageContext.request.contextPath}/orders/getAllOrders", "POST", param);
+	 response = JSON.parse(response)[0];
+	 console.log(response)
+	 var map = new Map();
 	
-	var map = new Map();
-	
-	for(key in response){
+	 for(key in response){
 		var order = response[key];
 		if(order.shippingStatus == 0) map[key] = order; 
-	}
-	appendPendingOrders(map);
+	 }
+	 appendPendingOrders(map);
 }
 
 var approvePendingOrder = async function(orderCode){
 	var param = "orderCode="+orderCode+"&status="+"APPROVE";
+	console.log(param)
 	var response = await serviceCall("${pageContext.request.contextPath}/orders/updateOrderStatus","POST",param);
 	getPendingOrders();
 }

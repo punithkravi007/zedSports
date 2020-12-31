@@ -302,11 +302,13 @@ body {
       margin-left: 5px; }
       
 .inn-cover{
-	background-image: url(https://i.pinimg.com/originals/71/98/9c/71989c45ff3e4cd4ee9a48f0dc7ca3e3.jpg);
+	background-size: cover;
+	background-image: url(https://png.pngtree.com/thumb_back/fh260/back_pic/04/21/36/73582ffd6891cf6.jpg);
 }
 
 .inn-cover-signin{
-	background-image: url(https://www.gunnerstown.com/wp-content/uploads/2018/07/4e12f2cafd4242d0acb5762d1f37ebb5.jpg);
+	background-size: cover;
+	background-image: url(https://gloryshinesports.com/images/pictures-58_banner.jpg);
 }
 
 .box-de {

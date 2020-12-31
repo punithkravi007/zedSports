@@ -1,6 +1,7 @@
 package com.ecommerce.zedSports.Controller.Admin.Orders;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -46,12 +47,12 @@ public class OrdersController {
 	}
 
 	@RequestMapping(value = "getAllOrders", method = RequestMethod.POST)
-	public @ResponseBody List<List<InvoiceEntity>> getAllOrdersHandler(@RequestParam("uqi") String uqi,
+	public @ResponseBody List<Map<String, InvoiceEntity>> getAllOrdersHandler(@RequestParam("uqi") String uqi,
 			HttpSession session) {
 		boolean isUSerActive = sessionController.isUserSessionActive(session);
 		boolean isUUIDValid = ((String) session.getAttribute("UNIQUE_ID")) != null
 				&& ((String) session.getAttribute("UNIQUE_ID")).equalsIgnoreCase(uqi) ? true : false;
-		List<List<InvoiceEntity>> map = null;
+		List<Map<String, InvoiceEntity>> map = null;
 		if (isUSerActive && isUUIDValid) {
 			map = orderService.getAllOrders(null);
 		}
