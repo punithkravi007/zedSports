@@ -281,6 +281,7 @@
 <script>
 var addressIdG;
 var isDeliveryAddressExistG;
+var cartItemsG;
 $(document).ready(function(){
 	
 	$('div.product-chooser').not('.disabled').find('div.product-chooser-item').on('click', function(){
@@ -289,6 +290,7 @@ $(document).ready(function(){
 		$(this).find('input[type="radio"]').prop("checked", true);
 	});
 
+	console.log('${USER_ENTITY.addressEntity}')
 	isDeliveryAddressExistG = '${USER_ENTITY.addressEntity}'.length > 3 ? true : false;
 	getCartProducts();
 	
@@ -385,6 +387,24 @@ var quantityChange = function(productId){
 var checkoutCart = async function(){
 
 	var isValidDeliveryDetails = validateDeliveryDetails();
+	console.log(isValidDeliveryDetails)
+	var orderItems = []
+	for(i=0;i<cartItemsG.length;i++){
+		item = {};
+		product = cartItemsG[i];
+		item["productId"] = product["productId"];
+		item["userId"] = '${USER_ENTITY.userId}';
+		item["addressId"] = addressIdG;
+		item["quantity"] = $("#prod-quantity-"+product["productId"]).val();
+		item["size"] = $("#prod-size-"+product["productId"]).children("option:selected").val();
+		item["originalPrice"] = $.trim($("#prod-bag-price-"+product["productId"]).text().split(".")[1]);
+		item["offerPrice"] = $.trim($("#prod-offer-price-"+product["productId"]).text().split(".")[1]);
+		item["orderTrackId"] = "0";
+		orderItems.push(item)
+	}
+	var param = "order="+JSON.stringify(orderItems)+"&"+"userId="+"${USER_ENTITY.userId}"+"&"+"uqi="+"${UNIQUE_ID}";
+	var status = await serviceCall("${pageContext.request.contextPath}/checkout/placeOrder", "POST", param);
+	console.log(status)
 	
 }
 
@@ -393,10 +413,38 @@ const validateDeliveryDetails = () => {
 	
 	var firstName  = $("#firstName").val();
 	var lastName  = $("#lastName").val();
-	var emailName  = $("#email").val();
+	var emailId  = $("#email").val();
 	var gender  = $("#gender").val();
 	
-	console.log(firstName,lastName, email,gender);
+	var address1 = $("#address1").val();
+	var address2 = $("#address2").val();
+	var city = $("#city").val();
+	var state = $("#state").val();
+	var country = $("#country").val();
+	var pincode = $("#pincode").val();
+	
+	
+	var isBasicDetailsValid  = !isFormFieldEmpty(firstName) && !isFormFieldEmpty(lastName) && !isFormFieldEmpty(emailId) && !isFormFieldEmpty(gender);
+	
+	if(isBasicDetailsValid){
+		if(!isDeliveryAddressExistG){
+			var isAddressDetailsValid = !isFormFieldEmpty(address1) && !isFormFieldEmpty(address2) && !isFormFieldEmpty(city) && !isFormFieldEmpty(state) && !isFormFieldEmpty(country) && !isFormFieldEmpty(pincode);	
+			if(isAddressDetailsValid){
+				addUserAddress()
+			}else{
+				console.log("Please Add Address")
+			}
+		}else{
+			if(addressIdG!="" && addressIdG!=undefined && addressIdG!=null){
+				return true
+			}else{
+				console.log("Select Address")
+			}
+		}
+	}else{
+		console.log("Please Enter valid details")
+	}
+	return false;	
 }
 
 
@@ -413,9 +461,9 @@ var deliveryDetailScreeHandler = function(){
 var getCartProducts = async function (){
 	var param = "userId="+'${USER_ENTITY.userId}'+"&"+"uqi="+"${UNIQUE_ID}";
 	var cart = await serviceCall("${pageContext.request.contextPath}/cart/getAllProductsFromCart","POST",param);
-	cart = JSON.parse(cart);
-	if(cart.length>0){
-		appendProductsToCart(cart);
+	cartItemsG = JSON.parse(cart);
+	if(cartItemsG.length>0){
+		appendProductsToCart(cartItemsG);
 		$(".cart-product-price").show();
 	}else{
 		$("#empty-cart-div").show();

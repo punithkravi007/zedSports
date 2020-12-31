@@ -1,5 +1,7 @@
 package com.ecommerce.zedSports.Controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +108,11 @@ public class SignInController {
 				&& ((String) session.getAttribute("UNIQUE_ID")).equalsIgnoreCase(uqi) ? true : false;
 		String response = "false";
 		if (isUserActive && isUUIDValid) {
+			UserEntity userEntity = (UserEntity) session.getAttribute("USER_ENTITY");
 			sessionManagmentService.addUserAddress(addressEntity);
+			List<AddressEntity> addressEntities = sessionManagmentService.getUserAdress(userEntity.getUserId());
+			userEntity.setAddressEntity(addressEntities);
+			session.setAttribute("USER_ENTITY", userEntity);
 			response = "true";
 		}
 		return response;

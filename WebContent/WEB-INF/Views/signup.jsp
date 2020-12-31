@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="core" uri="coreTags"%>
-<%@ taglib prefix="tiles" uri="springTiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -22,11 +20,43 @@
 <spring:url value="/Resources/assets/css/style.css" var="STYLE_CSS" />
 <link rel="stylesheet" href="${STYLE_CSS}">
 <style type="text/css">
-.box-de {
-	border-top-left-radius: 0px;
-	border-bottom-left-radius: 0px;
-	border-top-right-radius: 25px;
-	border-bottom-right-radius: 25px;
+.input-group>.custom-file, .input-group>.custom-select, .input-group>.form-cntrl
+	{
+	position: relative;
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	width: 1%;
+	margin-bottom: 0;
+}
+
+.form-cntrl {
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-left-color: rgb(206, 212, 218);
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-cntrl:focus {
+	border-color: green;
+	border: 2px solid;
+}
+</style>
+<style>
+.err-msg {
+	font-size: smaller;
+	font-style: italic;
+	color: red;
 }
 </style>
 
@@ -43,45 +73,51 @@
 						</div>
 						<p class="dfmn">Shop when you stop.</p>
 						<p>
-							<font color="darkpink">-- Register Here --</font>
+							<font color="darkgreen">-- Register Here --</font>
 						</p>
-						<div class="alert alert-warning" role="alert" id="mobileNumber-duplicate-err">This Number is Already Registered with us. Continue to Login or Change Number to Register.</div>
 						<form action="" method="post" id="register-form">
+							<p class="err-msg" id="reg-err-msg"
+								style="padding: 5px; background-color: antiquewhite"></p>
 							<div class="text-box-cont">
 								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="basic-addon1"><i
-											class="fas fa-phone"></i></span>
-									</div>
-									<input type="text" class="form-control" id="mobileNumber"
+									<input type="text" class="form-cntrl" id="mobileNumber"
 										name="userMobileNumber" placeholder="Enter Mobile Number"
 										aria-label="mobileNumber" aria-describedby="basic-addon1">
+									<div class="input-group-prepend">
+										<span class="input-group-text mobile-num-validate"
+											id="basic-addon1"><a href="#"><i
+												class="fas fa-arrow-right"></i></a></span>
+									</div>
 								</div>
 								<div class="input-group mb-3" id="input-otp-div">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="basic-addon2"><i
-											class="fa fa-circle-thin"></i></span>
-									</div>
 									<input type="text" class="form-control" id="otp"
 										placeholder="Enter OTP" aria-label="otp"
 										aria-describedby="basic-addon2">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="basic-addon2"><i
+											class="fa fa-arrow-right"></i></span>
+									</div>
 								</div>
 								<div class="input-group mb-3" id="input-password-div">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="basic-addon3"><i
-											class="fas fa-lock"></i></span>
-									</div>
-									<input type="text" class="form-control"
+									<input type="password" class="form-cntrl"
 										placeholder="Set Password" name="userPasword" id="password"
 										aria-label="password" aria-describedby="basic-addon3">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="basic-addon3"><i
+											class="fa fa-eye"></i></span>
+									</div>
 								</div>
-
 								<div class="input-group center">
-									<button class="btn btn-info btn-round" id="register-login-button">SIGN UP</button>
-								</div>
-								<div class="input-group center">
-									<a href="${pageContext.request.contextPath}/"
-										class="btn btn-danger btn-round">Cancel</a>
+									<div class="col-sm-6 col-md-6">
+										<button class="btn btn-info"
+											style="border-radius: 0px; width: 100%; float: right;"
+											id="register-login-button">SIGN UP</button>
+									</div>
+									<div class="col-sm-6 col-md-6">
+										<a href="${pageContext.request.contextPath}/"
+											style="border-radius: 0px; float: right;"
+											class="btn btn-danger">CANCEL</a>
+									</div>
 								</div>
 								<div class="row">
 									<p class="forget-p">
@@ -94,8 +130,7 @@
 						</form>
 					</div>
 					<div class="col-lg-6 col-md-6 col-sm-6 box-de">
-						<div class="inn-cover"
-							style="border-bottom-left-radius: 25px; border-top-left-radius: 25px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;">
+						<div class="inn-cover">
 							<div class="ditk-inf"></div>
 						</div>
 					</div>
@@ -118,14 +153,26 @@
 
 	<spring:url value="/Resources/assets/js/script.js" var="SELECT_MIN_JS" />
 	<script src="${SELECT_MIN_JS}"></script>
+
+	<spring:url value="/Resources/zed/js/Validations/commonValidations.js"
+		var="COMMON_VALIDATION_JS" />
+	<script src="${COMMON_VALIDATION_JS}"></script>
+
+	<spring:url value="/Resources/zed/js/Validations/signup.js"
+		var="SIGN_UP_VALIDATION_JS" />
+	<script src="${SIGN_UP_VALIDATION_JS}"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
+			$("#reg-err-msg").hide();
+			
 			$("#input-otp-div").hide();
 			$("#input-password-div").hide();
-			$("#mobileNumber-duplicate-err").hide();
+			
 
-			$("#mobileNumber").on({
-				"blur" : validateMobileNumber
+			$(".mobile-num-validate").on({
+				"click" : validateMobileNumber
 			});
 
 			$("#otp").on({
@@ -134,23 +181,29 @@
 		});
 
 		var validateMobileNumber = async function() {
-
+			
 			var action;
 			var enteredMobileNumber = $("#mobileNumber").val();
-			var isRegistered = await isUserRegistered(enteredMobileNumber);
 			
-			if(isRegistered == "true"){
-				action = "${pageContext.request.contextPath}/user/login";
-				$("#input-otp-div").hide();
-				$("#mobileNumber-duplicate-err").show();
-				$("#input-password-div").show();
-				$("#register-login-button").text("SIGN IN");
-			}else{
-				action = "${pageContext.request.contextPath}/user/register";
-				$("#input-otp-div").show();
-				$("#mobileNumber-duplicate-err").hide();
-				$("#input-password-div").hide();
-				$("#register-login-button").text("SIGN UP");
+			var isValidMobileNumber = isMobileNumberValid(enteredMobileNumber);
+			
+			if(isValidMobileNumber){
+				var isRegistered = await isUserRegistered(enteredMobileNumber);
+				
+				if(isRegistered == "true"){
+					action = "${pageContext.request.contextPath}/user/login";
+					$("#input-otp-div").hide();
+					$("#reg-err-msg").html("This Number Is Already Registered With Us. Enter Password and Proceed to Login or Try Different Number to Register.");
+					$("#reg-err-msg").show();
+					$("#input-password-div").show();
+					$("#register-login-button").text("SIGN IN");
+				}else{
+					action = "${pageContext.request.contextPath}/user/register";
+					$("#input-otp-div").show();
+					$("#mobileNumber-duplicate-err").hide();
+					$("#input-password-div").hide();
+					$("#register-login-button").text("SIGN UP");
+				}
 			}
 			
 			$("#register-form").attr("action",action);

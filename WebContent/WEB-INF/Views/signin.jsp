@@ -29,8 +29,7 @@
 			<div class="col-lg-10 col-md-12 col-sm-8 login-box">
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6 box-de">
-						<div class="inn-cover"
-							style="border-bottom-left-radius: 25px; border-top-left-radius: 25px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;">
+						<div class="inn-cover inn-cover-signin">
 							<div class="ditk-inf"></div>
 						</div>
 					</div>

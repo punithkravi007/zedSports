@@ -26,6 +26,9 @@
 	var="OWL_THEME_MIN_CSS" />
 <link rel="stylesheet" href="${OWL_THEME_MIN_CSS}">
 
+<spring:url value="/Resources/zed/js/Validations/commonValidations.js" var="COMMON_VALIDATION_JS" />
+<script src="${COMMON_VALIDATION_JS}"></script>
+
 
 <spring:url value="/Resources/css/core.css" var="CORE_CSS" />
 <link rel="stylesheet" href="${CORE_CSS}">
@@ -4454,6 +4457,8 @@ img{ max-width:100%;}
 
 	<spring:url value="/Resources/zed/js/zed.js" var="ZED_JS" />
 	<script src="${ZED_JS}"></script>
+	
+	
 
 	<script type="text/javascript">
 		
